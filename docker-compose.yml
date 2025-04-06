@@ -4,9 +4,11 @@ services:
     ports:
       - "8501:8501"  # Streamlit
       - "5000:5000"  # WebSocket
+      - "5443:5443"  # HTTPS
     volumes:
       - .:/app
       - ./data:/app/data
+      - ./ssl:/app/ssl  # Mount SSL certificates
     environment:
       - DB_HOST=db
       - DB_NAME="Patient data FYP"
@@ -17,6 +19,8 @@ services:
       - DEVICE_SECRET=${DEVICE_SECRET}
       - STREAMLIT_SERVER_ADDRESS=0.0.0.0
       - PYTHONUNBUFFERED=1
+      - SSL_KEYFILE=/app/ssl/server.key
+      - SSL_CERTFILE=/app/ssl/server.crt
     depends_on:
       db:
         condition: service_healthy
