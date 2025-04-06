@@ -4,28 +4,6 @@ import os
 import psycopg2
 from dotenv import load_dotenv
 
-# Load .env from common locations
-env_files = [
-    os.path.join('.env', 'FYP_webapp.env'),
-    '.env',
-    '../.env',
-]
-
-for env_file in env_files:
-    if os.path.exists(env_file):
-        load_dotenv(env_file)
-        print(f"[INFO] Loaded environment variables from {env_file}")
-        break
-else:
-    print("[WARN] No .env found. Falling back to system env.")
-
-# Read DB credentials
-DB_HOST = os.getenv("DB_HOST", "localhost")
-DB_NAME = os.getenv("DB_NAME", "Patient data FYP")
-DB_USER = os.getenv("DB_USER", "postgres")
-DB_PASSWORD = os.getenv("DB_PASSWORD", "")
-DB_PORT = os.getenv("DB_PORT", "5432")
-
 def get_db_connection():
     """Create a new database connection."""
     import os
@@ -45,8 +23,9 @@ def get_db_connection():
     else:
         print("[WARN] No .env found. Falling back to system env.")
     # Fetch environment variables inside the function
-    DB_HOST = os.getenv("DB_HOST", "localhost")
-    DB_NAME = os.getenv("DB_NAME", "Patient data FYP")
+    DB_HOST = os.getenv("DB_HOST", "db")  # Default to 'db' instead of localhost
+
+    DB_NAME = "\"Patient data FYP\""  # Ensure this is a valid database in your PostgreSQL instance
     DB_USER = os.getenv("DB_USER", "postgres")
     DB_PASSWORD = os.getenv("POSTGRES_PASSWORD", "")
     DB_PORT = os.getenv("DB_PORT", "5432")
