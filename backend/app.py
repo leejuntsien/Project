@@ -140,8 +140,8 @@ if __name__ == "__main__":
     import uvicorn
     
     # Get SSL paths from environment or use default paths
-    ssl_keyfile = os.getenv('SSL_KEYFILE', os.path.join(os.path.dirname(os.path.dirname(__file__)), "ssl", "server.key"))
-    ssl_certfile = os.getenv('SSL_CERTFILE', os.path.join(os.path.dirname(os.path.dirname(__file__)), "ssl", "server.crt"))
+    ssl_keyfile = os.getenv('SSL_KEY_PATH', os.path.join(os.path.dirname(os.path.dirname(__file__)), "ssl", "server.key"))
+    ssl_certfile = os.getenv('SSL_CERT_PATH', os.path.join(os.path.dirname(os.path.dirname(__file__)), "ssl", "server.crt"))
     
     if os.path.exists(ssl_keyfile) and os.path.exists(ssl_certfile):
         ssl_context = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)
