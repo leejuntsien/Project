@@ -7,10 +7,10 @@ services:
       - "5443:5443"  # HTTPS
     volumes:
       - .:/app
-      - ./data:/app/data
+      - ./data:/app/database
       - ./ssl:/app/ssl  # Mount SSL certificates
     environment:
-      - DB_HOST=localhost
+      - DB_HOST=db
       - DB_NAME="Patient data FYP"
       - DB_USER=postgres
       - DB_PASSWORD=${DB_PASSWORD}
@@ -21,6 +21,7 @@ services:
       - PYTHONUNBUFFERED=1
       - SSL_KEY_PATH=/app/ssl/server.key
       - SSL_CERT_PATH=/app/ssl/server.crt
+      - DATABASE_URL=postgresql://postgres:${POSTGRES_PASSWORD}@host.docker.internal:5432/Patient%20data%20FYP 
     depends_on:
       db:
         condition: service_healthy
