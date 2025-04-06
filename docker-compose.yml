@@ -10,10 +10,10 @@ services:
       - ./data:/app/data
       - ./ssl:/app/ssl  # Mount SSL certificates
     environment:
-      - DB_HOST=db
+      - DB_HOST=localhost
       - DB_NAME="Patient data FYP"
-      - DB_USER=app_user
-      - DB_PASSWORD=app_user_password
+      - DB_USER=postgres
+      - DB_PASSWORD=${DB_PASSWORD}
       - DB_PORT=5432
       - JWT_SECRET_KEY=${JWT_SECRET_KEY}
       - DEVICE_SECRET=${DEVICE_SECRET}
