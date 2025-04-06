@@ -13,18 +13,18 @@ def run_servers():
             "backend.app:app",
             "--host=0.0.0.0",
             "--port=5000",
-            "--ssl-keyfile=/app/ssl/server.key",
-            "--ssl-certfile=/app/ssl/server.crt"
+            f"--ssl-keyfile={os.getenv('SSL_KEY_PATH', '/app/ssl/server.key')}",
+            f"--ssl-certfile={os.getenv('SSL_CERT_PATH', '/app/ssl/server.crt')}"
         ])
         
         # Start Streamlit app with SSL
         streamlit_process = subprocess.Popen([
             "streamlit",
             "run",
-            "Home.py",
+            "main.py",
             "--server.port=8501",
-            "--server.sslCertFile=/app/ssl/server.crt",
-            "--server.sslKeyFile=/app/ssl/server.key"
+            f"--server.sslCertFile={os.getenv('SSL_CERT_PATH', '/app/ssl/server.crt')}",
+            f"--server.sslKeyFile={os.getenv('SSL_KEY_PATH', '/app/ssl/server.key')}"
         ])
         
         print("🚀 Servers started successfully!")
