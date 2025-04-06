@@ -1,0 +1,48 @@
+/**
+ * Backend Development Log
+ * -----------------------
+ * Last Updated: 2025-03-29 22:45 UTC+8
+ * 
+ * Redundant/Unused Backend Code
+ * -----------------------------
+ * - Admincredentials.py → Replaced by backend_auth.py
+ * - backend_patient_info.py → Completely broken (Admin Dashboard backend functions)
+ * - backend_patient_dashboard.py → `get_live_data()` function currently uses `pass` (data pathway not set)
+ * 
+ * Pending Backend Development
+ * ---------------------------
+ * [Admin Section]
+ * - Patient data query implementation
+ * - Patient password reset functionality
+ * - Patient info-to-data linkage queries
+ * - Data filtering logic for patient data views
+ * - Patient data visualization backend setup
+ * 
+ * [Data Flow & Live Streaming]
+ * - Data pipeline: Arduino → Flask → SQL → Streamlit (real-time feed)
+ * - Establish live data table/database in SQL
+ * - Implement live data streaming and periodic saving mechanism
+ * - Backend logic to retrieve and display saved patient data from SQL
+ * 
+ * [Patient Section]
+ * - Full backend implementation for Patient Dashboard
+ * - Live data streaming integration
+ * - Data saving and retrieval logic
+ * 
+ * Notes
+ * -----
+ * - Backend development is currently incomplete, with key components missing.
+ * - Live data flow remains untested; requires endpoint connections.
+ * - Priority: Establish data pipeline before refining UI elements.
+ */
+ * --------------
+ * Last Updated: 2025-03-30 19:35 +08:00
+ * 
+ * Status Report
+ * ------------
+ * [INFO] No work was done today.
+ * 
+ * Notes
+ * -----
+ * - Was not at my machine.
+ */

@@ -1,0 +1,209 @@
+Admin Section - Program Flow
+1. Main Page (main.py)
+Entry point with two options:
+
+Patient Login (Start User)
+
+Admin Login (🔑)
+
+2. Admin Authentication (admin_auth.py)
+Login form for administrators
+
+Security Features:
+
+Password hashing with Argon2
+
+Session-based authentication
+
+Auto-logout after 10 minutes of inactivity
+
+Options:
+
+Login → Redirects to Admin Dashboard
+
+Register New Admin (requires an existing admin's authentication)
+
+Home → Return to Main Page
+
+3. Admin Dashboard (admin_dashboard.py)
+Admin operations hub with real-time data
+
+Features:
+
+Live metrics (Pending Comments, Total Patients)
+
+Auto-refresh every 5 seconds
+
+Manage pending comments
+
+Navigation Sidebar:
+
+User Login Info
+
+User Data
+
+Patient Comments
+
+Logout (with confirmation prompt)
+
+4. Patient Information (patient_info.py)
+Complete database view for all patients
+
+Features:
+
+Searchable table (Filter by ID or Username)
+
+Hover over Patient ID to see dataset count
+
+Password management for each patient
+
+Links to detailed patient data
+
+Actions:
+
+View patient data
+
+Change patient passwords
+
+Refresh data
+
+5. Patient Data View (patient_data_view.py)
+Detailed patient records and visualizations
+
+Features:
+
+Time-series visualizations
+
+Searchable data table
+
+Expandable data entries
+
+Navigation:
+
+Back to patient list
+
+View detailed data instances
+
+6. Data Instance View (data_instance.py)
+Detailed view of a single data record
+
+Features:
+
+Interactive gauge charts
+
+Raw data display
+
+Patient identification
+
+Navigation:
+
+Back to patient data
+
+Back to patient list
+
+Security Features
+✅ Session-based authentication
+✅ Inactivity timeout (10 minutes)
+✅ Password hashing (Argon2)
+✅ Protected routes
+✅ Confirmation for critical actions
+✅ Audit trail for password changes
+
+Data Flow
+📌 Patient List → Patient Data View → Data Instance
+(Overview → Details → Specific Record)
+
+📌 Admin Dashboard → Patient Comments → Comment Actions
+(Monitoring → Review → Decision)
+
+Database Integration
+✅ PostgreSQL database
+✅ Secure connection handling
+✅ Transaction management
+✅ Connection pooling
+✅ Error handling
+
+📌 Note: All admin pages require authentication and redirect to login if session expires.
+
+/**
+ * Development Log
+ * --------------
+ * Last Updated: 2025-03-29 21:25 UTC+8
+ * 
+ * Status Report
+ * ------------
+ * [OK] Working Components:
+ *     - admin_auth.py
+ *     - admin_dashboard.py
+ *     - admin_registration.py
+ * 
+ * [ERROR] Non-functional Components:
+ *     - admin_patient_comments.py
+ *     - admin_data_instance.py
+ *     - admin_patient_data_view.py
+ *     - admin_patient_info.py
+ *     - admin_patient_data.py
+ * 
+ * Bug Analysis
+ * -----------
+ * Issue #1: SQL Query Failures
+ * Location: Patient data management components
+ * Root Cause: Unvalidated SQL queries in generated code
+ * Stack:
+ *   - PostgreSQL connection errors
+ *   - Invalid table references
+ *   - Potential schema mismatches
+ * 
+ * Action Items
+ * -----------
+ * TODO:
+ * [ ] Validate SQL query syntax
+ * [ ] Check database schema alignment
+ * [ ] Add error handling for DB operations
+ * [ ] Test data retrieval functions
+ * [ ] Implement proper connection pooling
+ * 
+ * Notes
+ * -----
+ * - Development paused at 22:30 UTC
+ * - Priority: Fix patient data retrieval first
+ * - Consider implementing query logging for debug
+ */
+ /**
+ * Development Log
+ * --------------
+ * Last Updated: 2025-03-30 19:35 +08:00
+ * 
+ * Status Report
+ * ------------
+ * [INFO] No work was done today.
+ * 
+ * Notes
+ * -----
+ * - Was not at my machine.
+ */
+ /**
+ * Last Updated: 2025-03-31 21:30 +08:00
+ * 
+ * Status Report
+ * ------------
+ * [INFO] Admin_patient_info page done
+ * - data parsing from SQL to streamlit
+ * - patient_data landing page html done
+ * 
+ * [ERROR] patient_data not done
+ * - patient_data and patient_data_view to be merged (just filtered instances)
+ * - data_instance pending
+ *
+ *
+ * Action Items
+ * -----------
+ * TODO: 
+ * - patient_data backend and page
+ * - data_instance backend and page
+ * - add searchbar at dashboard and a scrollable table within window, once clicked go to patient_data page, scrolling wont change page
+ *
+ * Notes
+ * -----
+ * - 
+ */

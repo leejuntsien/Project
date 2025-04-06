@@ -1,0 +1,102 @@
+Patient Section - Program Flow
+1. Main Page (main.py)
+Entry point with two options:
+
+Patient Login (Start User)
+
+Admin Login (🔑)
+
+2. User Authentication (patient_auth.py)
+Login form for users
+
+Security Features:
+Password hashing with Argon2
+Session-based authentication
+
+Options:
+Login → Redirects to Patient Dashboard
+Register New User (update to database)
+Forgot Password (require admin authentication)
+Home → Return to Main Page
+
+3. Patient Dashboard (patient_dashboard.py)
+patient operations hub with real-time data
+
+Features:
+Live metrics (Patient id, number of trials completed)
+Live data (connected from arduino sensor to SQL, data parsed from SQL)
+Auto-refresh every 5 seconds
+
+Navigation Sidebar:
+New trial - start logging trail into JSON/csv to be stored into SQL as data Entry
+Historic data - review past data queried from SQL
+Logout (with confirmation prompt)
+
+4. futher pages incoming.......
+
+/**
+ * Development Log
+ * --------------
+ * Last Updated: 2025-03-29 22:30 UTC+8
+ * 
+ * Status Report
+ * ------------
+ * [OK] Working Components:
+ *     - patient_auth.py
+ *     - patient_dashboard.py
+ * 
+ * [ERROR] Non-functional Components (empty code or missing logic):
+ *     - new_data.py
+ *     - historic_data.py
+ * 
+ * Bug Analysis
+ * -----------
+ * Issue #1: Incomplete Patient Dashboard Backend
+ * Location: patient_dashboard.py
+ * Root Cause:
+ *   - Backend functions for retrieving live and historical data are not implemented.
+ *   - No SQL queries or API endpoints exist for patient data handling.
+ *   - UI components exist but lack functional integration.
+ * Stack:
+ *   - Database connection and query logic
+ *   - Live data polling and real-time updates
+ *   - Backend functions for fetching patient history
+ * 
+ * Issue #2: Missing Code for New Trial and Historic Data
+ * Location: new_data.py, historic_data.py
+ * Root Cause:
+ *   - Files exist but contain no implemented logic.
+ *   - New trial data storage logic is not defined.
+ *   - No queries or logic for retrieving historical patient records.
+ * Stack:
+ *   - SQL transaction handling for trial data storage
+ *   - Query logic for fetching past patient records
+ *   - UI and backend communication setup
+ * 
+ * Action Items
+ * -----------
+ * TODO:
+ * [ ] Implement backend functions for patient data retrieval
+ * [ ] Define SQL queries and transaction handling
+ * [ ] Develop logic for real-time updates in patient dashboard
+ * [ ] Implement trial data logging and historical data retrieval
+ * 
+ * Notes
+ * -----
+ * - Development paused at 22:30 UTC+8
+ * - Priority: Build backend functionality before refining UI
+ * - Consider iterative testing with dummy data before full SQL integration
+ */
+ /**
+ * Development Log
+ * --------------
+ * Last Updated: 2025-03-30 19:35 +08:00
+ * 
+ * Status Report
+ * ------------
+ * [INFO] No work was done today.
+ * 
+ * Notes
+ * -----
+ * - Was not at my machine.
+ */

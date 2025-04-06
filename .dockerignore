@@ -1,0 +1,43 @@
+# Version Control
+.git
+.gitignore
+.gitattributes
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+ENV/
+env/
+
+# Development
+.env
+.env.*
+*.log
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Documentation
+README.md
+CHANGELOG.md
+docs/
+
+# Testing
+tests/
+test/
+coverage/
+
+# Frontend build artifacts (if separate from backend)
+node_modules/
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+
+# System Files
+.DS_Store
+Thumbs.db

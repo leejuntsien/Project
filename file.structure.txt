@@ -1,0 +1,89 @@
+.
+├── Admincredentials.py
+├── Dockerfile
+├── Improved Test Data Injection.txt
+├── __pycache__
+│   ├── admin_dashboard_backend.cpython-312.pyc
+│   ├── backend_auth.cpython-311.pyc
+│   ├── backend_auth.cpython-312.pyc
+│   ├── backend_patient_dashboard.cpython-312.pyc
+│   └── backend_patient_info.cpython-312.pyc
+├── admin_dashboard_backend.py
+├── api
+│   ├── schema.sql
+│   └── server.py
+├── arduino_code
+│   └── data_sender
+├── auth
+│   ├── jwt_auth.py
+│   └── security.py
+├── backend
+│   ├── Dockerfile
+│   ├── app.py
+│   ├── models
+│   │   ├── auth.py
+│   │   └── stream.py
+│   └── services
+│       └── stream_service.py
+├── backend_auth.py
+├── backend_patient_dashboard.py
+├── backend_patient_info.py
+├── data
+├── database
+│   ├── __pycache__
+│   │   ├── db_manager.cpython-311.pyc
+│   │   └── db_manager.cpython-312.pyc
+│   ├── db_manager.py
+│   ├── init.sql
+│   ├── init_secure_defaults.sql
+│   └── temp_tables.sql
+├── debug_data_types.py
+├── development_log.txt
+├── docker-compose.yml
+├── file.structure.txt
+├── frontend
+│   ├── Dockerfile
+│   └── static
+│       └── style.css
+├── main.py
+├── pages
+│   ├── Admin_multi_data.py
+│   ├── _admin_auth.py
+│   ├── _admin_dashboard.py
+│   ├── _admin_data_instance.py
+│   ├── _admin_patient_comments.py
+│   ├── _admin_patient_data.py
+│   ├── _admin_patient_info.py
+│   ├── _admin_registration.py
+│   ├── admin
+│   │   └── page_info.txt
+│   ├── admin_advanced_anal.py
+│   ├── device_management.py
+│   ├── historic_data.py
+│   ├── new_trial.py
+│   ├── patient
+│   │   └── page_info.txt
+│   ├── patient_auth.py
+│   ├── patient_dashboard.py
+│   ├── test_adminPatientData.py
+│   └── test_adminPatientData1.py
+├── postgres_data
+├── requirements.txt
+├── run_servers.py
+├── script_terminal_comment_bash.txt
+├── simulate_device.py
+├── static
+│   └── puppy_attack_doctor.png
+├── test_data_injection.py
+├── test_data_streamer.py
+├── test_db_init.py
+├── utils
+│   ├── __pycache__
+│   │   ├── multi_data_backend.cpython-312.pyc
+│   │   ├── security.cpython-312.pyc
+│   │   └── ui_utils.cpython-312.pyc
+│   ├── multi_data_backend.py
+│   └── security.py
+└── websocket_server.py
+
+21 directories, 66 files

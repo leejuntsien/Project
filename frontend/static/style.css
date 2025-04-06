@@ -1,0 +1,116 @@
+/* Modern color scheme */
+:root {
+    --primary: #2E7DAF;
+    --secondary: #4A90E2;
+    --accent: #16A085;
+    --background: #F5F7FA;
+    --text: #2C3E50;
+    --error: #E74C3C;
+    --success: #2ECC71;
+    --warning: #F1C40F;
+}
+
+/* General styling */
+.stApp {
+    background-color: var(--background);
+    color: var(--text);
+}
+
+/* Headers */
+h1, h2, h3 {
+    color: var(--primary);
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+/* Cards */
+.css-1r6slb0 {  /* Streamlit card class */
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    padding: 1.5rem;
+    margin: 1rem 0;
+}
+
+/* Buttons */
+.stButton > button {
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 0.5rem 1rem;
+    transition: all 0.3s ease;
+}
+
+.stButton > button:hover {
+    background-color: var(--secondary);
+    transform: translateY(-2px);
+}
+
+/* Input fields */
+.stTextInput > div > div > input {
+    border-radius: 5px;
+    border: 1px solid #E0E0E0;
+    padding: 0.5rem;
+}
+
+/* Data display */
+.dataframe {
+    border: none;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    border-radius: 5px;
+}
+
+/* Status indicators */
+.status-active {
+    color: var(--success);
+    font-weight: bold;
+}
+
+.status-inactive {
+    color: var(--error);
+    font-weight: bold;
+}
+
+/* Trial controls */
+.trial-controls {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    margin: 1rem 0;
+}
+
+.trial-controls button {
+    min-width: 120px;
+}
+
+/* Live data display */
+.live-data {
+    background: white;
+    border-radius: 10px;
+    padding: 1rem;
+    margin-top: 1rem;
+    border-left: 4px solid var(--accent);
+}
+
+/* Alerts and notifications */
+.stAlert {
+    border-radius: 5px;
+    margin: 1rem 0;
+}
+
+/* Loading spinner */
+.stSpinner {
+    border-color: var(--primary);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .trial-controls {
+        flex-direction: column;
+    }
+    
+    .trial-controls button {
+        width: 100%;
+    }
+}
