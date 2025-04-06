@@ -65,6 +65,7 @@ with col2:
 
 if st.button("connection"):
     conn = get_db_connection()
+    
 conn = get_db_connection()
 if conn:
     st.success("Database connection successful!")

@@ -15,8 +15,8 @@ RUN apt-get update && apt-get install -y \
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Create SSL directory
-RUN mkdir -p /app/ssl
+# Create SSL directory with proper permissions
+RUN mkdir -p /app/ssl && chmod 700 /app/ssl
 
 # Copy the rest of the application
 COPY . .
@@ -35,11 +35,11 @@ EXPOSE 5443
 RUN useradd -m appuser && chown -R appuser:appuser /app
 USER appuser
 
-# Add SSL directory permissions
+# Add SSL directory permissions and Streamlit config
 RUN mkdir -p ~/.streamlit \
     && echo "[server]" > ~/.streamlit/config.toml \
-    && echo "sslCertFile = '/app/ssl/server.crt'" >> ~/.streamlit/config.toml \
-    && echo "sslKeyFile = '/app/ssl/server.key'" >> ~/.streamlit/config.toml
+    && echo "enableCORS = false" >> ~/.streamlit/config.toml \
+    && echo "enableXsrfProtection = true" >> ~/.streamlit/config.toml
 
 # Run the application
 CMD ["python", "run_servers.py"]

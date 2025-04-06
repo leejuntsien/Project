@@ -8,12 +8,37 @@ import jwt
 from datetime import datetime, timedelta
 import os
 from dotenv import load_dotenv
-from services.stream_service import StreamService
-from models.auth import TokenData, DeviceAuth
-from models.stream import SensorData, TrialResponse
+from backend.services.stream_service import StreamService
+from backend.models.auth import TokenData, DeviceAuth
+from backend.models.stream import SensorData, TrialResponse
 import ssl
 
-load_dotenv()
+import os
+from dotenv import load_dotenv
+import asyncpg
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.security import OAuth2PasswordBearer
+from fastapi.middleware.trustedhost import TrustedHostMiddleware
+
+# Load .env from common locations
+env_files = [
+    os.path.join('.env', 'FYP_webapp.env'),
+    '.env',
+    '../.env',
+]
+for env_file in env_files:
+    if os.path.exists(env_file):
+        load_dotenv(env_file)
+        print(f"[INFO] Loaded environment variables from {env_file}")
+        break
+    else:
+        print("[WARN] No .env found. Falling back to system env.")
+
+# Check if variables are loaded
+print(f"DB_HOST: {os.getenv('DB_HOST')}")
+print(f"DB_USER: {os.getenv('DB_USER')}")
+print(f"DB_PASSWORD: {os.getenv('DB_PASSWORD')}")
 
 app = FastAPI(
     title="FYP WebApp API",
@@ -51,14 +76,20 @@ async def add_security_headers(request: Request, call_next):
     response.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains"
     return response
 
-# Database connection pool
+# Your database connection logic should go here
 async def init_db():
-    return await asyncpg.create_pool(
-        host=os.getenv('DB_HOST'),
-        database=os.getenv('DB_NAME'),
-        user=os.getenv('DB_USER'),
-        password=os.getenv('DB_PASSWORD')
-    )
+    try:
+        pool = await asyncpg.create_pool(
+            host=os.getenv('DB_HOST'),
+            database=os.getenv('DB_NAME'),
+            user=os.getenv('DB_USER'),
+            password=os.getenv('DB_PASSWORD')
+        )
+        print("[INFO] Database connection established.")
+        return pool
+    except Exception as e:
+        print(f"[ERROR] Failed to connect to the database: {str(e)}")
+        return None
 
 # Initialize services
 pool = None
@@ -67,8 +98,11 @@ stream_service = None
 @app.on_event("startup")
 async def startup_event():
     global pool, stream_service
-    pool = await init_db()
-    stream_service = StreamService(pool)
+    db_pool = await init_db()
+    if db_pool:
+        print("Connected to the database.")
+    else:
+        print("Database connection failed.")
 
 @app.on_event("shutdown")
 async def shutdown_event():

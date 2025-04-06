@@ -19,8 +19,8 @@ services:
       - DEVICE_SECRET=${DEVICE_SECRET}
       - STREAMLIT_SERVER_ADDRESS=0.0.0.0
       - PYTHONUNBUFFERED=1
-      - SSL_KEYFILE=/app/ssl/server.key
-      - SSL_CERTFILE=/app/ssl/server.crt
+      - SSL_KEY_PATH=/app/ssl/server.key
+      - SSL_CERT_PATH=/app/ssl/server.crt
     depends_on:
       db:
         condition: service_healthy
