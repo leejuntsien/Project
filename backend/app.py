@@ -138,13 +138,21 @@ async def end_trial(
 
 if __name__ == "__main__":
     import uvicorn
-    ssl_keyfile = os.path.join(os.path.dirname(__file__), "..", "ssl", "server.key")
-    ssl_certfile = os.path.join(os.path.dirname(__file__), "..", "ssl", "server.crt")
+    
+    # Get SSL paths from environment or use default paths
+    ssl_keyfile = os.getenv('SSL_KEYFILE', os.path.join(os.path.dirname(os.path.dirname(__file__)), "ssl", "server.key"))
+    ssl_certfile = os.getenv('SSL_CERTFILE', os.path.join(os.path.dirname(os.path.dirname(__file__)), "ssl", "server.crt"))
     
     if os.path.exists(ssl_keyfile) and os.path.exists(ssl_certfile):
         ssl_context = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)
         ssl_context.load_cert_chain(certfile=ssl_certfile, keyfile=ssl_keyfile)
+        print(f"🔒 Starting server with SSL")
+        print(f"Certificate file: {ssl_certfile}")
+        print(f"Key file: {ssl_keyfile}")
         uvicorn.run(app, host="0.0.0.0", port=5000, ssl=ssl_context)
     else:
-        print("Warning: SSL certificates not found. Running without SSL (not recommended for production)")
+        print("⚠️ Warning: SSL certificates not found at:")
+        print(f"Certificate file: {ssl_certfile}")
+        print(f"Key file: {ssl_keyfile}")
+        print("Running without SSL (not recommended for production)")
         uvicorn.run(app, host="0.0.0.0", port=5000)
