@@ -1,6 +1,8 @@
 from fastapi import FastAPI, WebSocket, Depends, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.middleware.trustedhost import TrustedHostMiddleware
 from fastapi.security import OAuth2PasswordBearer
+from fastapi.responses import JSONResponse
 import asyncpg
 import jwt
 from datetime import datetime, timedelta
@@ -18,7 +20,11 @@ app = FastAPI(
     description="Secure API with SSL and CORS protection",
     version="1.0.0"
 )
+
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+
+# Security middleware
+app.add_middleware(TrustedHostMiddleware, allowed_hosts=["localhost", "127.0.0.1"])
 
 # CORS middleware with more restrictive settings
 allowed_origins = [
@@ -35,6 +41,15 @@ app.add_middleware(
     expose_headers=["*"],
     max_age=600,  # Cache preflight requests for 10 minutes
 )
+
+@app.middleware("http")
+async def add_security_headers(request: Request, call_next):
+    response = await call_next(request)
+    response.headers["X-Content-Type-Options"] = "nosniff"
+    response.headers["X-Frame-Options"] = "DENY"
+    response.headers["X-XSS-Protection"] = "1; mode=block"
+    response.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains"
+    return response
 
 # Database connection pool
 async def init_db():
