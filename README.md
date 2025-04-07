@@ -1,4 +1,13 @@
 <h1>FYP – aPatientDashboardForDataVisualization</h1>
+<h2>Disclaimer 🚨</h2>
+<hr>
+<p>
+    This project is a **Final Year Project (FYP)** and was created as part of my learning journey. It is not intended for production use, and I am not actively maintaining it.
+</p>
+<p>
+    If you encounter bugs or issues, feel free to fork the repo and fix them yourself—good luck! 😅
+</p>
+<hr>
 
 <h2>🛠 Getting Started</h2>
 <p>
@@ -130,9 +139,23 @@
 <p>
   That’s it. It <em>should</em> work. If it doesn’t… blame the stars, not the code. Good luck, and may the backend bugs stay forever hidden.
 </p>
-[p.s. remember to install the dependencies from requirement.txt, and also add the details in your .env file]
+<h3>📦 A Couple More Things...</h3>
+<ul>
+  <li>
+    <strong>Dependencies:</strong> Don't forget to install everything in <code>requirements.txt</code>. Seriously. Just do it: 
+    <code>pip install -r requirements.txt</code>
+  </li>
+  <li>
+    <strong>.env Setup:</strong> Make sure to create your <code>.env</code> file with the necessary configs (DB creds, secret keys, vibes, etc.).
+  </li>
+  <li>
+    <strong>Live Data Streaming (Optional but Cool):</strong> 
+    Want to pretend you're getting real-time patient data? Check out 
+    <code>simulate_device.py</code> in the <em>"trying out some stuff"</em> folder. It lets you simulate a data stream. 
+    Tweak it, run it, and feel like a tech wizard. Erm kinda, you can connect your real device using similar code, just that this file have some of the stuff to write to server and route to sql so it might be easier than to code from scratch.
+  </li>
+</ul>
 
 <p>  
   <h1>GOODBYE, I dont think I'll continue this project since my focus isn't really software dev anyway.... </h1>
 </p>
-
