@@ -1,63 +1,161 @@
-FYP-aPatientDashboardForDataVisualization
-Getting Started
-Access the dashboard like this:
+<h1>FYP – aPatientDashboardForDataVisualization</h1>
+<h2>Disclaimer 🚨</h2>
+<hr>
+<p>
+    This project is a **Final Year Project (FYP)** and was created as part of my learning journey. It is not intended for production use, and I am not actively maintaining it.
+</p>
+<p>
+    If you encounter bugs or issues, feel free to fork the repo and fix them yourself—good luck! 😅
+</p>
+<hr>
+
+<h2>🛠 Getting Started</h2>
+<p>
+  So you bravely spun up the Docker container—respect. But now the logs say it’s running on <code>http://0.0.0.0:8501</code> address.
+</p>
+<p>
+  Here's the trick: 
+  <strong><code>0.0.0.0</code></strong> means “I’m listening on everything” —not where you actually want to go, trust me if you try <strong><code>0.0.0.0:8501</code></strong> you'll get a page don't exist screen.
+</p>
+<p>
+  To access the dashboard like a normal human, just open your browser and head to:
+</p>
+<p>
+  <strong><code>http://localhost:8501</code></strong> <br>
+  or if that fails, try <strong><code>127.0.0.1:8501</code></strong>—they’re basically twins.
+</p>
 
 
-About This Project
-This is my Final Year Project, where I, your humble and slightly overwhelmed developer, attempted to create a patient data dashboard using Streamlit. It's not groundbreaking software—it’s more like a "It works, don't touch it!" kind of thing.
-There are two main parts holding this project together:
+<hr>
+
+<h2>📖 About This Project</h2>
+<p>
+  This is my Final Year Project, where I, your humble and slightly overwhelmed developer, attempted to create a patient data dashboard using Streamlit.
+</p>
+<p>
+  It's not groundbreaking software—it’s more like a <em>"It works, don’t touch it!"</em> kind of thing.
+</p>
+<p>
+  There are two main forces holding this project together (barely):
+</p>
+<ul>
+  <li>🌀 <strong>Chaos</strong> – lovingly cobbled together with vibes, caffeine, and whatever GenAI tools I could bribe into helping me.</li>
+  <li>🌈 <strong>Hope</strong> – and maybe, just maybe, a few lines of working code that haven’t spontaneously combusted... yet.</li>
+  <li>🛠️ <strong>Disclaimer:</strong> I mostly wrangled the backend and the connection code myself. Streamlit makes me feel like I did frontend too (don’t burst my bubble). As for Docker and the cursed database connection... I’m gonna need a wizard. Or therapy.</li>
+</ul>
 
 
-Repo Layout (It's A Maze)
-If you thought this repo was clean and organized, ha—think again. Let me walk you through it:
+<hr>
+
+<h2>🗂 Repo Layout (It's A Maze)</h2>
+<p>If you thought this repo was clean and organized—ha! Think again. Let me walk you through it:</p>
+
+<pre><code>
 .
-├── Admincredentials.py          # Admin credential management. erm... now i look at it, it might be    redundant
-├── Dockerfile                   # Docker setup file.
-├── Improved Test Data Injection.txt # My attempt at "improving" something...? (p.s. sometimes when you have working code and you want to compare just save them as txt file, ...maybe)
+├── Admincredentials.py             # Admin credential management. erm... might be redundant now.
+├── Dockerfile                      # Docker setup file.
+├── Improved Test Data Injection.txt # My attempt at "improving" something... maybe?
 ├── api/
-│   ├── schema.sql               # Database schema file.
-│   └── server.py                # API server code.
-├── arduino_code/                # ...currently home to one lonely file. (it is empty tho)
-│   └── data_sender/
-├── auth/                        # Stuff to authenticate you (not the safest, but it works, pls dont sql inject him).
-│   ├── jwt_auth.py
-│   └── security.py
-├── backend/                     # The backend brain. actually not really there is still a lot more mess where i forgot to clean the code
+│   ├── schema.sql                  # Database schema file.
+│   └── server.py                   # API server code.
+├── arduino_code/
+│   └── data_sender/                # ...currently home to one lonely file. (it's empty tho)
+├── auth/
+│   ├── jwt_auth.py                 # Stuff to authenticate you.
+│   └── security.py                 # Not the safest, but it works. pls don't SQL inject him.
+├── backend/
 │   ├── Dockerfile
-│   ├── app.py                   # Backend app functionality.
-│   ├── models/                  # Contains some data models.
-│   └── services/                # Services for the backend.
-├── database/                    # SQL scripts, temporary tables, and my database manager.
-│   ├── init.sql                 # Initialization script (good luck running it).
-│   └── temp_tables.sql          # Temporary database tables.
-├── frontend/                    # CSS and frontend static files.
+│   ├── app.py                      # Backend app functionality.
+│   ├── models/                     # Contains some data models.
+│   └── services/                   # Backend service logic.
+├── database/
+│   ├── init.sql                    # Initialization script (good luck running it).
+│   └── temp_tables.sql             # Temporary database tables.
+├── frontend/
 │   ├── Dockerfile
 │   └── static/
-│       └── style.css            # The one and only style file (it’s not great, don’t judge).
-├── pages/                       # Streamlit page logic.
-│   ├── patient_dashboard.py     # Example: Patient Dashboard functionality.
-│   └── admin/                   # Admin-specific pages and logic.
-├── static/                      # Random static assets.
-│   └── puppy_attack_doctor.png  # Totally relevant puppy image.
-├── requirements.txt             # Python dependencies.
-├── docker-compose.yml           # Docker configuration.
+│       └── style.css               # The one and only CSS file. (It’s not great, don’t judge.)
+├── pages/
+│   ├── patient_dashboard.py        # Streamlit Patient Dashboard functionality.
+│   └── admin/                      # Admin-specific pages.
+├── static/
+│   └── puppy_attack_doctor.png     # Totally relevant puppy image.
+├── requirements.txt                # Python dependencies.
+├── docker-compose.yml              # Docker config file.
 └── ...and much, much more!
+</code></pre>
+
+<hr>
+
+<h2>😅 Things I Didn’t Nail</h2>
+<ul>
+  <li><strong>CSS:</strong> Let’s just say I styled it <em>creatively</em>.</li>
+  <li><strong>Security:</strong> Do <strong>NOT</strong>, under any circumstances, run this in production unless you're ready for chaos. (Shout out to those vibe coder bros that dared.)</li>
+  <li><strong>Docker:</strong> Functional but clunky. The database connection might break your soul.</li>
+  <li><strong>Empty Folders:</strong> Some folders exist purely to make me look busy.</li>
+  <li><strong>Folder Names:</strong> Descriptive? No. Creative? Absolutely.</li>
+</ul>
+
+<hr>
+
+<h2>🐾 Bonus Easter Egg</h2>
+<p>Check out the <code>static/</code> folder for a totally relevant image that will definitely brighten your day.</p>
+<p><em>Hint: It's called <code>puppy_attack_doctor.png</code>.</em></p>
+<p>It’s not related to the project, but it brings joy to an otherwise serious FYP journey.</p>
+
+<hr>
+
+<h2>🧭 Final Notes</h2>
+<p>
+  This project is my journey through the perilous waters of coding, debugging, and barely surviving deadlines.
+</p>
+<p>
+  If you’re here to fork, clone, or make sense of this mess—<strong>good luck, brave soul.</strong>
+</p>
+<p>
+  And if you have suggestions or life hacks for dealing with Docker nightmares—I’m all ears.
+</p>
 
 
-Things I Didn't Nail
--CSS: Let's just say I styled it "creatively."
--Security: Do NOT, under any circumstances, run this in production unless you're ready for chaos. (Shout out to those vibe coder bros that dared)
--Docker: It’s functional but clunky. Also, the database connection might break your soul.
--Empty Folders: Some folders exist purely to fill space and make me look busy.
--Folder Names: Descriptive? No. Creative? Yes!
+<h2>💡 Proof That This Thing Actually Works (No, Seriously)</h2>
+<p>
+  Alright, so if you're like me and Docker decided to launch itself straight into the abyss, here's the janky-but-functional workaround I use to get things running:
+</p>
 
+<ol>
+  <li>Open your terminal and run: <code>python websocket_server.py</code></li>
+  <li>In another terminal (yes, you'll need two), run: <code>streamlit run main.py</code></li>
+  <li>
+    Streamlit will probably suggest something like <code>http://localhost:8501</code>, but—
+    surprise! —sometimes that doesn't vibe with the database.
+    When that happens, I just go straight to: <code>http://192.168.1.2:8501</code> (or whatever your LAN IP is).
+  </li>
+</ol>
 
-Bonus Easter Egg 🐾
-Check out  if you need a laugh. It’s not related to the project, but it brings joy to an otherwise serious FYP journey.
+<p>
+  If everything went well, you should see a glorious, slightly chaotic dashboard. But—important note—make sure to initialize your SQL database first or you’ll be staring at a blank screen wondering what went wrong (spoiler: it’s always the database).
+</p>
 
-Final Notes
-This project is my journey through the perilous waters of coding, debugging, and barely surviving deadlines. If you’re here to fork, clone, or make sense of this mess—good luck, brave soul. And if you have suggestions or life hacks for dealing with Docker nightmares, I’m all ears.
+<p>
+  That’s it. It <em>should</em> work. If it doesn’t… blame the stars, not the code. Good luck, and may the backend bugs stay forever hidden.
+</p>
+<h3>📦 A Couple More Things...</h3>
+<ul>
+  <li>
+    <strong>Dependencies:</strong> Don't forget to install everything in <code>requirements.txt</code>. Seriously. Just do it: 
+    <code>pip install -r requirements.txt</code>
+  </li>
+  <li>
+    <strong>.env Setup:</strong> Make sure to create your <code>.env</code> file with the necessary configs (DB creds, secret keys, vibes, etc.).
+  </li>
+  <li>
+    <strong>Live Data Streaming (Optional but Cool):</strong> 
+    Want to pretend you're getting real-time patient data? Check out 
+    <code>simulate_device.py</code> in the <em>"trying out some stuff"</em> folder. It lets you simulate a data stream. 
+    Tweak it, run it, and feel like a tech wizard. Erm kinda, you can connect your real device using similar code, just that this file have some of the stuff to write to server and route to sql so it might be easier than to code from scratch.
+  </li>
+</ul>
 
-ALSO SINCE I CANT CONNECT DATABASE I REMOVED THIS FROM THE YML.
-- ./database/03-init_secure_defaults.sql:/docker-entrypoint-initdb.d/03-secure-defaults.sql
-SO THE APP IS LESS SECURE AGAIN
+<p>  
+  <h1>GOODBYE, I dont think I'll continue this project since my focus isn't really software dev anyway.... </h1>
+</p>
