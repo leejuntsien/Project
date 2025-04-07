@@ -1,8 +1,21 @@
 <h1>FYP – aPatientDashboardForDataVisualization</h1>
 
 <h2>🛠 Getting Started</h2>
-<p>Access the dashboard like this:</p>
-<!-- Add instructions or screenshots here -->
+<p>
+  So you bravely spun up the Docker container—respect. But now the logs say it’s running on <code>http://0.0.0.0:8501</code> address.
+</p>
+<p>
+  Here's the trick: 
+  <strong><code>0.0.0.0</code></strong> means “I’m listening on everything” —not where you actually want to go, trust me if you try <strong><code>0.0.0.0:8501</code></strong> you'll get a page don't exist screen.
+</p>
+<p>
+  To access the dashboard like a normal human, just open your browser and head to:
+</p>
+<p>
+  <strong><code>http://localhost:8501</code></strong> <br>
+  or if that fails, try <strong><code>127.0.0.1:8501</code></strong>—they’re basically twins.
+</p>
+
 
 <hr>
 
