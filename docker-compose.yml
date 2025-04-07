@@ -56,7 +56,6 @@ services:
       - ./database/01-schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
       - ./database/02-temp_tables.sql:/docker-entrypoint-initdb.d/02-temp-tables.sql
     environment:
-      - POSTGRES_INITDB_ARGS=--no-password
       - POSTGRES_DB=Patient_data_FYP
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
