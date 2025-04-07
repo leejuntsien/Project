@@ -106,3 +106,33 @@
 <p>
   And if you have suggestions or life hacks for dealing with Docker nightmares—I’m all ears.
 </p>
+
+
+<h2>💡 Proof That This Thing Actually Works (No, Seriously)</h2>
+<p>
+  Alright, so if you're like me and Docker decided to launch itself straight into the abyss, here's the janky-but-functional workaround I use to get things running:
+</p>
+
+<ol>
+  <li>Open your terminal and run: <code>python websocket_server.py</code></li>
+  <li>In another terminal (yes, you'll need two), run: <code>streamlit run main.py</code></li>
+  <li>
+    Streamlit will probably suggest something like <code>http://localhost:8501</code>, but—
+    surprise! —sometimes that doesn't vibe with the database.
+    When that happens, I just go straight to: <code>http://192.168.1.2:8501</code> (or whatever your LAN IP is).
+  </li>
+</ol>
+
+<p>
+  If everything went well, you should see a glorious, slightly chaotic dashboard. But—important note—make sure to initialize your SQL database first or you’ll be staring at a blank screen wondering what went wrong (spoiler: it’s always the database).
+</p>
+
+<p>
+  That’s it. It <em>should</em> work. If it doesn’t… blame the stars, not the code. Good luck, and may the backend bugs stay forever hidden.
+</p>
+[p.s. remember to install the dependencies from requirement.txt, and also add the details in your .env file]
+
+<p>  
+  <h1>GOODBYE, I dont think I'll continue this project since my focus isn't really software dev anyway.... </h1>
+</p>
+
