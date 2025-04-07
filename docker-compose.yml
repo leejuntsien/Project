@@ -11,7 +11,7 @@ services:
       - ./ssl:/app/ssl  # Mount SSL certificates
     environment:
       - DB_HOST=db
-      - DB_NAME="Patient data FYP"
+      - DB_NAME=Patient_data_FYP
       - DB_USER=postgres
       - DB_PASSWORD=${DB_PASSWORD}
       - DB_PORT=5432
@@ -21,7 +21,7 @@ services:
       - PYTHONUNBUFFERED=1
       - SSL_KEY_PATH=/app/ssl/server.key
       - SSL_CERT_PATH=/app/ssl/server.crt
-      - DATABASE_URL=postgresql://postgres:${POSTGRES_PASSWORD}@host.docker.internal:5432/Patient%20data%20FYP 
+      - DATABASE_URL=postgresql://postgres:${POSTGRES_PASSWORD}@host.docker.internal:5432/Patient_data_FYP 
     depends_on:
       db:
         condition: service_healthy
@@ -45,16 +45,19 @@ services:
         max-file: "10"
 
   db:
-    image: postgres:15
+    build:
+      context: ./database  # Path to the folder containing the Dockerfile
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./api/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
-      - ./database/temp_tables.sql:/docker-entrypoint-initdb.d/02-temp-tables.sql
-      - ./database/init_secure_defaults.sql:/docker-entrypoint-initdb.d/03-secure-defaults.sql
+      - ./database/00-init.sql:/docker-entrypoint-initdb.d/00-init.sql
+      - ./database/init.sh:/docker-entrypoint-initdb.d/init.sh      
+      - ./database/01-schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
+      - ./database/02-temp_tables.sql:/docker-entrypoint-initdb.d/02-temp-tables.sql
     environment:
-      - POSTGRES_DB="Patient data FYP"
+      - POSTGRES_INITDB_ARGS=--no-password
+      - POSTGRES_DB=Patient_data_FYP
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_INITDB_ARGS=--auth-host=scram-sha-256

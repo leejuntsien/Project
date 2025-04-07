@@ -25,7 +25,7 @@ else:
 
 # Database connection parameters
 DB_HOST = os.getenv("DB_HOST", "localhost")
-DB_NAME = os.getenv("DB_NAME", "Patient data FYP")
+DB_NAME = os.getenv("DB_NAME", "Patient_data_FYP")
 DB_USER = os.getenv("DB_USER", "postgres")
 DB_PASSWORD = os.getenv("POSTGRES_PASSWORD", "")
 DB_PORT = os.getenv("DB_PORT", "5432")

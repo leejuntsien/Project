@@ -23,7 +23,7 @@ def get_db_connection():
     # Fetch environment variables inside the function
     DB_HOST = os.getenv("DB_HOST", "db")  # Default to 'db' instead of localhost
 
-    DB_NAME = "\"Patient data FYP\""  # Ensure this is a valid database in your PostgreSQL instance
+    DB_NAME = "Patient_data_FYP"  # Ensure this is a valid database in your PostgreSQL instance
     DB_USER = os.getenv("DB_USER", "postgres")
     DB_PASSWORD = os.getenv("POSTGRES_PASSWORD", "")
     DB_PORT = os.getenv("DB_PORT", "5432")
@@ -44,3 +44,22 @@ def get_db_connection():
 
 
 print(get_db_connection())
+
+username='ppp'
+conn = get_db_connection()
+if not conn:
+    print("Database conn err")
+
+with conn.cursor() as cursor:
+    # List all tables in the public schema
+    cursor.execute("""
+        SELECT table_name 
+        FROM information_schema.tables 
+        WHERE table_schema = 'public'
+    """)
+    tables = cursor.fetchall()
+    print("[INFO] Tables in current database:")
+    for table in tables:
+        print(" -", table[0])
+
+conn.close()

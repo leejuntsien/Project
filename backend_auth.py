@@ -25,7 +25,7 @@ def get_db_connection():
     # Fetch environment variables inside the function
     DB_HOST = os.getenv("DB_HOST", "db")  # Default to 'db' instead of localhost
 
-    DB_NAME = "\"Patient data FYP\""  # Ensure this is a valid database in your PostgreSQL instance
+    DB_NAME = "Patient_data_FYP"  # Ensure this is a valid database in your PostgreSQL instance
     DB_USER = os.getenv("DB_USER", "postgres")
     DB_PASSWORD = os.getenv("POSTGRES_PASSWORD", "")
     DB_PORT = os.getenv("DB_PORT", "5432")

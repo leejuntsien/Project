@@ -57,3 +57,7 @@ Check out  if you need a laugh. It’s not related to the project, but it brings
 
 Final Notes
 This project is my journey through the perilous waters of coding, debugging, and barely surviving deadlines. If you’re here to fork, clone, or make sense of this mess—good luck, brave soul. And if you have suggestions or life hacks for dealing with Docker nightmares, I’m all ears.
+
+ALSO SINCE I CANT CONNECT DATABASE I REMOVED THIS FROM THE YML.
+- ./database/03-init_secure_defaults.sql:/docker-entrypoint-initdb.d/03-secure-defaults.sql
+SO THE APP IS LESS SECURE AGAIN

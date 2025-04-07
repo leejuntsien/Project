@@ -38,6 +38,7 @@ for env_file in env_files:
 # Check if variables are loaded
 print(f"DB_HOST: {os.getenv('DB_HOST')}")
 print(f"DB_USER: {os.getenv('DB_USER')}")
+print(f"DB_NAME: {os.getenv('DB_NAME')}")
 print(f"DB_PASSWORD: {os.getenv('DB_PASSWORD')}")
 
 app = FastAPI(
@@ -81,7 +82,7 @@ async def init_db():
     try:
         pool = await asyncpg.create_pool(
             host=os.getenv('DB_HOST'),
-            database=os.getenv('DB_NAME'),
+            database=os.getenv('DB_NAME', "Patient_data_FYP"),
             user=os.getenv('DB_USER'),
             password=os.getenv('DB_PASSWORD')
         )

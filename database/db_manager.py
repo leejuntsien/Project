@@ -46,7 +46,7 @@ load_env_vars()
 
 # Database connection parameters
 DB_HOST = os.getenv("DB_HOST", "db")  # Default to 'db' instead of localhost
-DB_NAME = os.getenv("DB_NAME", "Patient data FYP")
+DB_NAME = os.getenv("DB_NAME", "Patient_data_FYP")
 DB_USER = os.getenv("DB_USER", "postgres")
 DB_PASSWORD = os.getenv("DB_PASSWORD", "")
 DB_PORT = os.getenv("DB_PORT", "5432")

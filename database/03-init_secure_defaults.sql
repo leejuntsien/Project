@@ -27,12 +27,12 @@ CREATE ROLE app_user WITH LOGIN PASSWORD 'app_user_password';
 CREATE ROLE readonly WITH LOGIN PASSWORD 'readonly_password';
 
 -- Grant appropriate permissions
-GRANT CONNECT ON DATABASE "Patient data FYP" TO app_user;
+GRANT CONNECT ON DATABASE "Patient_data_FYP" TO app_user;
 GRANT USAGE ON SCHEMA public TO app_user;
 GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO app_user;
 GRANT USAGE ON ALL SEQUENCES IN SCHEMA public TO app_user;
 
-GRANT CONNECT ON DATABASE "Patient data FYP" TO readonly;
+GRANT CONNECT ON DATABASE "Patient_data_FYP" TO readonly;
 GRANT USAGE ON SCHEMA public TO readonly;
 GRANT SELECT ON ALL TABLES IN SCHEMA public TO readonly;
 
