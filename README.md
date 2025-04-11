@@ -159,3 +159,13 @@
 <p>  
   <h1>GOODBYE, I dont think I'll continue this project since my focus isn't really software dev anyway.... </h1>
 </p>
+
+
+<p>  
+    <h2>Hey, I'm back to add this little info about the project: </h2>
+</p>
+<p> <li> 1. The UI have been updated using Lovable.io (thanks AI!)</li></p>
+<p> <li> 2. I added a file "run_all.py" to handle run one to run all function. </li></p>
+<p> <li> 3. I addded a mock arduino code in c++ so you can tweak it based on your own wifi and port addresses (p.s. it is just a generic one I put there, not mine, ok?)</li></p>
+
+<p> <h1> Goodbye for real now!</h1></p>
