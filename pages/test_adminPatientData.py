@@ -486,7 +486,7 @@ st.write("---")
 col1, col2, col3 = st.columns(3)
 
 with col1:
-    if st.button("🏠 Back to Patient List"):
+    if st.button("📊 Back to Patient List"):
         st.switch_page("pages/_admin_patient_info.py")
         
 with col2:
@@ -500,6 +500,11 @@ with col3:
         st.query_params["clear_filters"] = "true"
         st.session_state.selected_rows = {}  # Clear selections
         st.rerun()
+
+col1,col2, col3=st.columns([1,1,1])
+with col2:
+    if st.button ("🏠 Back to Dashboard", key="main_dashboard"):
+        st.switch_page("pages/_admin_dashboard.py")
 
 @st.dialog("Confirm Action") 
 def dialog_data_id():
@@ -583,5 +588,7 @@ if st.sidebar.button("🔙 Show All Data", key="sidebar_show_all"):
     st.query_params["clear_filters"] = "true"
     st.session_state.selected_rows = {}  # Clear selections
     st.rerun()
-if st.sidebar.button("🏠 Back to Patient List", key="sidebar_back"):
+if st.sidebar.button("📊 Back to Patient List", key="sidebar_back"):
     st.switch_page("pages/_admin_patient_info.py")
+if st.sidebar.button ("🏠 Back to Dashboard", key="sidebar_dashboard"):
+    st.switch_page("pages/_admin_dashboard.py")

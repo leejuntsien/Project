@@ -1,0 +1,313 @@
+
+/* Enhanced Medical Monitoring System Styles */
+:root {
+    --primary: #3498db;
+    --primary-dark: #2980b9;
+    --secondary: #2ecc71;
+    --secondary-dark: #27ae60;
+    --accent: #9b59b6;
+    --background: #f8f9fa;
+    --card-bg: #ffffff;
+    --text: #2c3e50;
+    --error: #e74c3c;
+    --success: #2ecc71;
+    --warning: #f39c12;
+    --gray-light: #ecf0f1;
+    --gray: #bdc3c7;
+    --gray-dark: #7f8c8d;
+    --shadow: rgba(0, 0, 0, 0.1);
+}
+
+/* Base styles */
+.stApp {
+    background-color: var(--background);
+    color: var(--text);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Headers */
+h1, h2, h3, h4, h5 {
+    color: var(--primary-dark);
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+}
+
+h1 {
+    font-size: 2.2rem;
+    border-bottom: 2px solid var(--primary);
+    padding-bottom: 0.5rem;
+}
+
+h2 {
+    font-size: 1.8rem;
+    color: var(--accent);
+}
+
+h3 {
+    font-size: 1.4rem;
+}
+
+/* Cards and containers */
+.card {
+    background: var(--card-bg);
+    border-radius: 10px;
+    box-shadow: 0 4px 6px var(--shadow);
+    padding: 1.5rem;
+    margin: 1rem 0;
+    border-left: 4px solid var(--primary);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px var(--shadow);
+}
+
+.card-success {
+    border-left-color: var(--success);
+}
+
+.card-warning {
+    border-left-color: var(--warning);
+}
+
+.card-error {
+    border-left-color: var(--error);
+}
+
+/* Buttons */
+.stButton > button {
+    border-radius: 6px !important;
+    font-weight: 600 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    padding: 0.6rem 1.2rem !important;
+    transition: all 0.3s ease !important;
+    border: none !important;
+}
+
+.stButton > button:first-child {
+    background-color: var(--primary) !important;
+    color: white !important;
+}
+
+.stButton > button:first-child:hover {
+    background-color: var(--primary-dark) !important;
+    box-shadow: 0 4px 8px var(--shadow) !important;
+    transform: translateY(-2px) !important;
+}
+
+button[data-baseweb="button"].primary {
+    background-color: var(--primary) !important;
+}
+
+button[data-baseweb="button"].secondary {
+    background-color: var(--secondary) !important;
+}
+
+button[data-baseweb="button"].danger {
+    background-color: var(--error) !important;
+}
+
+/* Inputs */
+div[data-baseweb="input"] {
+    border-radius: 6px !important;
+}
+
+div[data-baseweb="input"]:focus-within {
+    border-color: var(--primary) !important;
+    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.3) !important;
+}
+
+/* Metrics and KPIs */
+.metric-container {
+    background: linear-gradient(145deg, var(--card-bg), var(--gray-light));
+    border-radius: 10px;
+    padding: 1rem;
+    box-shadow: 0 2px 10px var(--shadow);
+    text-align: center;
+}
+
+.metric-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--primary-dark);
+}
+
+.metric-label {
+    font-size: 0.9rem;
+    color: var(--gray-dark);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Status indicators */
+.status-active {
+    color: var(--success);
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.status-active:before {
+    content: "";
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    background-color: var(--success);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+}
+
+.status-inactive {
+    color: var(--gray-dark);
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.status-inactive:before {
+    content: "";
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    background-color: var(--gray);
+    border-radius: 50%;
+}
+
+/* Animations */
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.2);
+        opacity: 0.7;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Tables */
+.dataframe {
+    border: none !important;
+    border-collapse: separate !important;
+    border-spacing: 0 !important;
+    border-radius: 8px !important;
+    overflow: hidden !important;
+    box-shadow: 0 2px 8px var(--shadow) !important;
+}
+
+.dataframe th {
+    background-color: var(--primary) !important;
+    color: white !important;
+    font-weight: 600 !important;
+    padding: 12px 15px !important;
+    text-transform: uppercase !important;
+    font-size: 0.8rem !important;
+    letter-spacing: 0.5px !important;
+}
+
+.dataframe td {
+    border-top: 1px solid var(--gray-light) !important;
+    padding: 10px 15px !important;
+}
+
+.dataframe tr:nth-child(even) {
+    background-color: var(--gray-light) !important;
+}
+
+.dataframe tr:hover {
+    background-color: rgba(52, 152, 219, 0.1) !important;
+}
+
+/* Tabs */
+.stTabs [data-baseweb="tab-list"] {
+    gap: 8px;
+}
+
+.stTabs [data-baseweb="tab"] {
+    border-radius: 6px 6px 0 0;
+    padding: 10px 20px;
+    background-color: var(--gray-light);
+}
+
+.stTabs [data-baseweb="tab"][aria-selected="true"] {
+    background-color: var(--primary);
+    color: white;
+}
+
+/* Plotly charts */
+.js-plotly-plot {
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 6px var(--shadow);
+}
+
+/* Live data section */
+.live-data {
+    border-left: 4px solid var(--secondary);
+    background-color: var(--card-bg);
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px var(--shadow);
+}
+
+/* Background image styling */
+.background-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+    opacity: 0.05;
+    background-size: cover;
+    background-position: center;
+    pointer-events: none;
+}
+
+/* Trial containers */
+.trial-container {
+    border: 1px solid var(--gray-light);
+    border-radius: 8px;
+    padding: 1.5rem;
+    background: linear-gradient(to right bottom, var(--card-bg), var(--gray-light));
+    box-shadow: 0 3px 10px var(--shadow);
+}
+
+/* Progress indicators */
+.progress-indicator {
+    height: 8px;
+    border-radius: 4px;
+    background-color: var(--gray-light);
+    margin: 10px 0;
+    overflow: hidden;
+}
+
+.progress-indicator .bar {
+    height: 100%;
+    background-color: var(--primary);
+    border-radius: 4px;
+    transition: width 0.5s ease;
+}
+
+/* Media queries for responsive design */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 1.8rem;
+    }
+    
+    h2 {
+        font-size: 1.5rem;
+    }
+    
+    .metric-value {
+        font-size: 1.5rem;
+    }
+}

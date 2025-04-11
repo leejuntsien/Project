@@ -1,3 +1,4 @@
+
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -6,8 +7,31 @@ from streamlit_autorefresh import st_autorefresh
 from datetime import datetime
 import json
 from backend_auth import get_db_connection
+import base64
+import time
 
+# Page configuration with wider layout
 st.set_page_config(page_title="Trial Recording", layout="wide")
+
+# Apply custom CSS
+with open("frontend/static/enhanced_style.css", "r") as f:
+    st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+
+# Helper function to add a background image
+def add_bg_image():
+    # Creating an abstract pattern background
+    bg_html = """
+    <style>
+    .stApp {
+        background-image: linear-gradient(to bottom, rgba(245, 247, 250, 0.95), rgba(245, 247, 250, 0.95)), 
+                          url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%233498db' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
+    }
+    </style>
+    """
+    st.markdown(bg_html, unsafe_allow_html=True)
+
+# Add the background pattern
+add_bg_image()
 
 # Ensure user is logged in
 if "patient_id" not in st.session_state:
@@ -19,13 +43,35 @@ trial_id = st.session_state.get("current_trial_id")
 
 if not trial_id:
     st.error("No active trial! Please start a trial from the dashboard.")
+    
+    # Add a redirect button
+    st.markdown("""
+    <div style="text-align: center; margin-top: 2rem;">
+        <p>Return to the dashboard to start a new trial</p>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    if st.button("Go to Dashboard", use_container_width=True):
+        st.switch_page("pages/patient_dashboard.py")
+    
     st.stop()
 
-st.title("📝 Trial Recording")
-st.subheader(f"Trial #{trial_id}")
+# Add attractive header
+st.markdown(f"""
+<div style="display: flex; align-items: center; margin-bottom: 1rem;">
+    <div style="flex-grow: 1;">
+        <h1 style="margin: 0;">📝 Trial Recording</h1>
+        <p style="margin: 0; color: #7f8c8d;">Collecting real-time health data</p>
+    </div>
+    <div style="background-color: #2ecc71; color: white; padding: 0.5rem 1rem; border-radius: 20px; font-weight: bold;">
+        Trial #{trial_id} Active
+    </div>
+</div>
+""", unsafe_allow_html=True)
 
 # Auto-refresh for live data
-st_autorefresh(interval=7000, key="trial_refresh")
+refresh_interval = 7
+st_autorefresh(interval=refresh_interval * 1000, key="trial_refresh")
 
 # Custom JSON encoder to handle datetime objects
 class DateTimeEncoder(json.JSONEncoder):
@@ -34,8 +80,10 @@ class DateTimeEncoder(json.JSONEncoder):
             return obj.isoformat()
         return super().default(obj)
 
+# Function implementations
 def get_live_data():
     """Get the most recent data from live_patient_data table"""
+    # ... keep existing code
     conn = get_db_connection()
     if not conn:
         return None
@@ -137,6 +185,7 @@ def get_live_data():
 
 def get_trial_data_count():
     """Get count of data collected for this trial from trial_temp table"""
+    # ... keep existing code
     conn = get_db_connection()
     if not conn:
         return 0
@@ -159,6 +208,7 @@ def get_trial_data_count():
 
 def end_trial():
     """End trial and save data in a simplified time-series format"""
+    # ... keep existing code
     conn = get_db_connection()
     if not conn:
         return False
@@ -321,89 +371,170 @@ def end_trial():
     finally:
         conn.close()
 
+# Layout for trial information and controls
+col1, col2 = st.columns([1, 3])
+
+with col1:
+    st.markdown("""
+    <div class="card">
+        <h3>Trial Information</h3>
+    """, unsafe_allow_html=True)
+    
+    # Update trial data count in sidebar
+    data_count = get_trial_data_count()
+    st.markdown(f"""
+        <div class="status-active">Active Trial: #{trial_id}</div>
+        <div class="progress-indicator">
+            <div class="bar" style="width: {min(100, data_count/5)}%"></div>
+        </div>
+    """, unsafe_allow_html=True)
+    
+    st.metric("Data Points Collected", data_count)
+    
+    # Ensure trial_start_time resets when trial_id changes
+    if "previous_trial_id" not in st.session_state or st.session_state["previous_trial_id"] != trial_id:
+        st.session_state["trial_start_time"] = datetime.now()
+        st.session_state["previous_trial_id"] = trial_id
+    
+    # Calculate trial duration
+    current_time = datetime.now()
+    start_time = st.session_state["trial_start_time"]
+    duration = current_time - start_time
+    hours, remainder = divmod(duration.seconds, 3600)
+    minutes, seconds = divmod(remainder, 60)
+    
+    duration_str = f"{hours}h {minutes}m {seconds}s"
+    st.metric("Trial Duration", duration_str)
+    
+    # End trial button
+    if st.button("🔴 End Trial", type="primary", use_container_width=True):
+        with st.spinner("Saving trial data..."):
+            if end_trial():
+                st.success("Trial completed and data saved successfully!")
+                time.sleep(1)  # Small delay for better UX
+                st.switch_page("pages/patient_dashboard.py")
+            else:
+                st.error("Failed to end trial. Please try again or contact support.")
+    
+    st.markdown("</div>", unsafe_allow_html=True)  # Close the card div
+
 # Get current data for visualization
-df = get_live_data()
-
-# Update trial data count in sidebar
-data_count = get_trial_data_count()
-st.sidebar.subheader("Trial Information")
-st.sidebar.info(f"Trial #{trial_id} is active")
-st.sidebar.metric("Data Points Collected", data_count)
-
-# Display data
-if df is not None and not df.empty:
-    try:
-        # Get numerical columns
-        param_columns = [col for col in df.columns if col != 'timestamp' and pd.api.types.is_numeric_dtype(df[col])]
-        
-        if not param_columns:
-            st.warning("No numerical data found in the sensor readings.")
-        else:
-            # Create line plots
-            for param in param_columns:
-                try:
-                    # Create a clean copy of the data for plotting
-                    plot_df = pd.DataFrame({
-                        'timestamp': df['timestamp'],
-                        param: df[param].astype(float)  # Ensure numeric type
-                    })
-                    
-                    # Remove NaN values
-                    plot_df = plot_df.dropna()
-                    
-                    if len(plot_df) == 0:
-                        st.info(f"No valid data for {param}")
-                        continue
-                    
-                    fig = px.line(
-                        plot_df,
-                        x='timestamp',
-                        y=param,
-                        title=f"{param.replace('_', ' ').title()}"
-                    )
-                    
-                    fig.update_layout(
-                        height=250,
-                        margin=dict(l=0, r=0, t=30, b=0),
-                        xaxis_title=None,
-                        yaxis_title=None,
-                        showlegend=False,
-                        xaxis=dict(showgrid=True),
-                        yaxis=dict(showgrid=True)
-                    )
-                    
-                    # Add rolling average if we have enough data points
-                    if len(plot_df) >= 5:
-                        # Calculate rolling average
-                        rolling_avg = plot_df[param].rolling(window=min(5, len(plot_df))).mean()
+with col2:
+    st.markdown("""
+    <div class="card live-data">
+        <h3>Live Sensor Data</h3>
+        <p>Data refreshes every 7 seconds. All data is being saved automatically.</p>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    df = get_live_data()
+    
+    if df is not None and not df.empty:
+        try:
+            # Get numerical columns
+            param_columns = [col for col in df.columns if col != 'timestamp' and pd.api.types.is_numeric_dtype(df[col])]
+            
+            if not param_columns:
+                st.warning("No numerical data found in the sensor readings.")
+            else:
+                # Create line plots
+                for param in param_columns:
+                    try:
+                        # Create a clean copy of the data for plotting
+                        plot_df = pd.DataFrame({
+                            'timestamp': df['timestamp'],
+                            param: df[param].astype(float)  # Ensure numeric type
+                        })
                         
-                        fig.add_scatter(
-                            x=plot_df['timestamp'],
-                            y=rolling_avg,
-                            name=f"{param} (5s avg)",
-                            line=dict(color='red', width=1, dash='dot')
+                        # Remove NaN values
+                        plot_df = plot_df.dropna()
+                        
+                        if len(plot_df) == 0:
+                            st.info(f"No valid data for {param}")
+                            continue
+                        
+                        fig = px.line(
+                            plot_df,
+                            x='timestamp',
+                            y=param,
+                            title=f"{param.replace('_', ' ').title()}"
                         )
-                    
-                    st.plotly_chart(fig, use_container_width=True)
-                except Exception as e:
-                    st.error(f"Error plotting {param}: {str(e)}")
-    except Exception as e:
-        st.error(f"Error processing data for visualization: {str(e)}")
-        st.exception(e)  # Show full traceback for debugging
-else:
-    st.info("Waiting for sensor readings...")
+                        
+                        fig.update_layout(
+                            height=250,
+                            margin=dict(l=0, r=0, t=30, b=0),
+                            xaxis_title=None,
+                            yaxis_title=None,
+                            showlegend=False,
+                            xaxis=dict(showgrid=True),
+                            yaxis=dict(showgrid=True),
+                            plot_bgcolor='rgba(255,255,255,0.8)',
+                            paper_bgcolor='rgba(255,255,255,0)',
+                            font=dict(color='#2c3e50')
+                        )
+                        
+                        # Add rolling average if we have enough data points
+                        if len(plot_df) >= 5:
+                            # Calculate rolling average
+                            rolling_avg = plot_df[param].rolling(window=min(5, len(plot_df))).mean()
+                            
+                            fig.add_scatter(
+                                x=plot_df['timestamp'],
+                                y=rolling_avg,
+                                name=f"{param} (5s avg)",
+                                line=dict(color='#e74c3c', width=2, dash='dot')
+                            )
+                        
+                        st.plotly_chart(fig, use_container_width=True)
+                        
+                        # Add metrics for this parameter
+                        current_val = plot_df[param].iloc[-1] if len(plot_df) > 0 else "N/A"
+                        avg_val = plot_df[param].mean() if len(plot_df) > 0 else "N/A"
+                        min_val = plot_df[param].min() if len(plot_df) > 0 else "N/A"
+                        max_val = plot_df[param].max() if len(plot_df) > 0 else "N/A"
+                        
+                        metrics_cols = st.columns(4)
+                        metrics_cols[0].metric("Current", f"{current_val:.1f}" if isinstance(current_val, (int, float)) else current_val)
+                        metrics_cols[1].metric("Average", f"{avg_val:.1f}" if isinstance(avg_val, (int, float)) else avg_val)
+                        metrics_cols[2].metric("Min", f"{min_val:.1f}" if isinstance(min_val, (int, float)) else min_val)
+                        metrics_cols[3].metric("Max", f"{max_val:.1f}" if isinstance(max_val, (int, float)) else max_val)
+                    except Exception as e:
+                        st.error(f"Error plotting {param}: {str(e)}")
+        except Exception as e:
+            st.error(f"Error processing data for visualization: {str(e)}")
+            st.exception(e)  # Show full traceback for debugging
+    else:
+        st.info("Waiting for sensor readings...")
+        
+        # Add a placeholder with animated dots
+        st.markdown("""
+        <div style="text-align: center; padding: 2rem;">
+            <div style="display: inline-block; margin-bottom: 1rem;">
+                <div class="loader"></div>
+            </div>
+            <p style="color: #7f8c8d; font-style: italic;">Waiting for data to stream from your sensors...</p>
+        </div>
+        <style>
+        .loader {
+            border: 5px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 5px solid #3498db;
+            width: 50px;
+            height: 50px;
+            animation: spin 2s linear infinite;
+            margin: 0 auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        </style>
+        """, unsafe_allow_html=True)
 
-# End trial button
-if st.button("🔴 End Trial", type="primary"):
-    with st.spinner("Saving trial data..."):
-        if end_trial():
-            st.success("Trial completed and data saved!")
-            st.switch_page("pages/patient_dashboard.py")
-        else:
-            st.error("Failed to end trial. Please try again or contact support.")
-
-# Add a debug section to show the data format
-if st.checkbox("Show data format preview"):
+# Debug section in expander
+with st.expander("Technical Information", expanded=False):
+    st.subheader("Data Format Preview")
     if df is not None and not df.empty:
         # Create a preview of the simplified time-series format
         preview_data = {
@@ -413,11 +544,24 @@ if st.checkbox("Show data format preview"):
         for param in [col for col in df.columns if col != 'timestamp']:
             preview_data[param] = df[param].tolist()[:5]
         
-        st.subheader("Data Format Preview")
-        st.json(preview_data)
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            st.markdown("**JSON Data Format**")
+            st.json(preview_data)
+        
+        with col2:
+            st.markdown("**Storage Information**")
+            st.markdown(f"""
+            - **Trial ID:** {trial_id}
+            - **Patient ID:** {patient_id}
+            - **Data Points:** {data_count}
+            - **Storage Database:** PostgreSQL
+            - **Auto-save Interval:** Continuous
+            """)
         
         # Also show metadata preview
-        st.subheader("Metadata Preview (stored in file_data)")
+        st.subheader("Metadata Preview")
         
         # Calculate some basic statistics for the preview
         stats = {}
@@ -425,11 +569,14 @@ if st.checkbox("Show data format preview"):
             if key != "timestamps":
                 values = [v for v in preview_data[key] if v is not None]
                 if values:
-                    stats[key] = {
-                        "min": min(values),
-                        "max": max(values),
-                        "avg": sum(values) / len(values)
-                    }
+                    try:
+                        stats[key] = {
+                            "min": min(values),
+                            "max": max(values),
+                            "avg": sum(values) / len(values)
+                        }
+                    except:
+                        pass
         
         # Format the metadata preview
         metadata_preview = (
@@ -445,4 +592,13 @@ if st.checkbox("Show data format preview"):
             metadata_preview += f"  {key}: min={stat['min']:.2f}, max={stat['max']:.2f}, avg={stat['avg']:.2f}\n"
         
         st.code(metadata_preview)
-        st.caption("This metadata will be stored in the file_data column when you end the trial.")
+
+# Navigation footer
+st.markdown("""
+<div style="margin-top: 2rem; display: flex; justify-content: center;">
+""", unsafe_allow_html=True)
+
+if st.button("← Return to Dashboard", use_container_width=True):
+    st.switch_page("pages/patient_dashboard.py")
+
+st.markdown("</div>", unsafe_allow_html=True)  # Close the flex container

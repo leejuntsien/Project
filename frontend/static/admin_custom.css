@@ -1,0 +1,397 @@
+
+/* Admin Dashboard Custom CSS */
+
+/* Main Layout */
+.main {
+    background-color: #f8fafc;
+    color: #1e293b;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+  
+  /* Dashboard Cards */
+  .dashboard-card {
+    border-radius: 10px;
+    border: 1px solid #e2e8f0;
+    padding: 1.5rem;
+    background-color: white;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  
+  .dashboard-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  }
+  
+  /* Headers */
+  h1, h2, h3 {
+    font-weight: 600;
+  }
+  
+  h1 {
+    color: #1e40af;
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+  
+  h2 {
+    color: #1e3a8a;
+    font-size: 1.5rem;
+    margin-bottom: 0.75rem;
+  }
+  
+  h3 {
+    color: #2563eb;
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+    border-bottom: 1px solid #e2e8f0;
+    padding-bottom: 0.5rem;
+  }
+  
+  /* Buttons */
+  .stButton > button {
+    border-radius: 6px;
+    font-weight: 500;
+    transition: all 0.2s;
+  }
+  
+  .stButton > button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Primary Button */
+  .primary-button > button {
+    background-color: #3b82f6;
+    color: white;
+  }
+  
+  .primary-button > button:hover {
+    background-color: #2563eb;
+  }
+  
+  /* Secondary Button */
+  .secondary-button > button {
+    background-color: #f1f5f9;
+    color: #334155;
+    border: 1px solid #cbd5e1;
+  }
+  
+  .secondary-button > button:hover {
+    background-color: #e2e8f0;
+  }
+  
+  /* Danger Button */
+  .danger-button > button {
+    background-color: #ef4444;
+    color: white;
+  }
+  
+  .danger-button > button:hover {
+    background-color: #dc2626;
+  }
+  
+  /* Success Button */
+  .success-button > button {
+    background-color: #10b981;
+    color: white;
+  }
+  
+  .success-button > button:hover {
+    background-color: #059669;
+  }
+  
+  /* Info Button */
+  .info-button > button {
+    background-color: #0ea5e9;
+    color: white;
+  }
+  
+  .info-button > button:hover {
+    background-color: #0284c7;
+  }
+  
+  /* Warning Button */
+  .warning-button > button {
+    background-color: #f59e0b;
+    color: white;
+  }
+  
+  .warning-button > button:hover {
+    background-color: #d97706;
+  }
+  
+  /* Metrics */
+  .metric-card {
+    padding: 1rem;
+    border-radius: 8px;
+    background-color: white;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    border-left: 4px solid #3b82f6;
+  }
+  
+  /* Data Tables */
+  div[data-testid="stDataFrame"] > div {
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #e2e8f0;
+  }
+  
+  div[data-testid="stDataFrame"] th {
+    background-color: #f1f5f9;
+    color: #334155;
+    font-weight: 600;
+    text-align: center !important;
+  }
+  
+  div[data-testid="stDataFrame"] td {
+    text-align: center !important;
+  }
+  
+  div[data-testid="stDataFrame"] tr:nth-child(even) {
+    background-color: #f8fafc;
+  }
+  
+  div[data-testid="stDataFrame"] tr:hover {
+    background-color: #e0f2fe;
+  }
+  
+  /* Input Fields */
+  div[data-baseweb="input"] {
+    border-radius: 6px;
+  }
+  
+  /* Expanders */
+  .streamlit-expanderHeader {
+    font-weight: 600;
+    color: #334155;
+    background-color: #f1f5f9;
+    border-radius: 6px;
+    padding: 0.75rem 1rem;
+  }
+  
+  .streamlit-expanderContent {
+    border: 1px solid #e2e8f0;
+    border-top: none;
+    border-radius: 0 0 6px 6px;
+    padding: 1rem;
+  }
+  
+  /* Sidebar */
+  [data-testid="stSidebar"] {
+    background-color: #1e293b;
+    color: white;
+  }
+  
+  [data-testid="stSidebar"] .stButton > button {
+    background-color: #334155;
+    color: white;
+    border: 1px solid #475569;
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+  
+  [data-testid="stSidebar"] .stButton > button:hover {
+    background-color: #475569;
+  }
+  
+  [data-testid="stSidebar"] h1, 
+  [data-testid="stSidebar"] h2, 
+  [data-testid="stSidebar"] h3 {
+    color: white;
+  }
+  
+  /* Tabs */
+  .stTabs [data-baseweb="tab-list"] {
+    gap: 8px;
+  }
+  
+  .stTabs [data-baseweb="tab"] {
+    border-radius: 4px 4px 0 0;
+    padding: 8px 16px;
+    background-color: #f1f5f9;
+  }
+  
+  .stTabs [aria-selected="true"] {
+    background-color: white !important;
+    border-bottom: 2px solid #3b82f6 !important;
+    font-weight: 600;
+  }
+  
+  /* Pagination Controls */
+  .pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 1rem 0;
+  }
+  
+  .pagination-number {
+    margin: 0 0.25rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    background-color: #f1f5f9;
+    color: #334155;
+    cursor: pointer;
+  }
+  
+  .pagination-number.active {
+    background-color: #3b82f6;
+    color: white;
+  }
+  
+  /* Toast Messages */
+  .toast-container {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    z-index: 9999;
+  }
+  
+  .toast {
+    padding: 1rem;
+    border-radius: 6px;
+    margin-bottom: 0.5rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+  }
+  
+  .toast-success {
+    background-color: #dcfce7;
+    border-left: 4px solid #10b981;
+    color: #14532d;
+  }
+  
+  .toast-error {
+    background-color: #fee2e2;
+    border-left: 4px solid #ef4444;
+    color: #7f1d1d;
+  }
+  
+  .toast-warning {
+    background-color: #fef3c7;
+    border-left: 4px solid #f59e0b;
+    color: #78350f;
+  }
+  
+  .toast-info {
+    background-color: #e0f2fe;
+    border-left: 4px solid #0ea5e9;
+    color: #0c4a6e;
+  }
+  
+  /* Admin Data Instance Visualizations */
+  .visualization-container {
+    background-color: white;
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+    margin-bottom: 1rem;
+  }
+  
+  /* Animation Classes */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  .fade-in {
+    animation: fadeIn 0.5s ease-out forwards;
+  }
+  
+  /* Patient Data Styling */
+  .patient-card {
+    background: linear-gradient(145deg, #ffffff, #f0f4f8);
+    border-radius: 10px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+    transition: all 0.3s ease;
+    border-left: 4px solid #3b82f6;
+  }
+  
+  .patient-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Data editor styling */
+  [data-testid="stDataEditor"] > div {
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #e2e8f0;
+  }
+  
+  /* Improve readability of code blocks */
+  code {
+    background-color: #f1f5f9;
+    color: #334155;
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+    font-family: 'SF Mono', 'Consolas', monospace;
+    font-size: 0.9em;
+  }
+  
+  pre {
+    background-color: #1e293b;
+    color: #e2e8f0;
+    padding: 1rem;
+    border-radius: 8px;
+    overflow-x: auto;
+  }
+  
+  /* Checkbox styling */
+  [data-testid="stCheckbox"] > div {
+    display: inline-flex;
+    align-items: center;
+  }
+  
+  /* Custom tooltip */
+  .tooltip {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .tooltip .tooltiptext {
+    visibility: hidden;
+    width: 200px;
+    background-color: #334155;
+    color: white;
+    text-align: center;
+    border-radius: 6px;
+    padding: 0.5rem;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -100px;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  
+  .tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+  }
+  
+  /* Add these CSS properties to optimize Streamlit's rerun behavior */
+  div[data-testid="stExpander"] {
+    transition: height 0.3s ease-out;
+  }
+  
+  div.stSelectbox, div.stMultiSelect {
+    transition: all 0.3s ease;
+  }
+  
+  /* Make form elements appear more integrated with the page */
+  .streamlit-widget {
+    transition: all 0.3s ease;
+  }
+  
+  /* Background pattern (subtle) */
+  .main .block-container {
+    background-image: 
+      linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)),
+      url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23e2e8f0' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+  

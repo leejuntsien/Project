@@ -62,3 +62,5 @@ coverage/
 
 ssl/
 *.key
+
+README.md

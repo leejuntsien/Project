@@ -1,3 +1,4 @@
+
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -8,9 +9,32 @@ from datetime import datetime, timedelta
 from backend_auth import get_db_connection
 from backend_patient_dashboard import *
 
+# Page configuration with wider layout
 st.set_page_config(page_title="Patient Data Comparison", layout="wide")
 
-st.title("🔍 Data Comparison")
+# Apply custom CSS
+with open("frontend/static/enhanced_style.css", "r") as f:
+    st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+
+# Add background patterns
+st.markdown("""
+<div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: -1; opacity: 0.03; pointer-events: none;">
+    <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+        <pattern id="pattern" width="40" height="40" patternUnits="userSpaceOnUse">
+            <circle cx="20" cy="20" r="2" fill="#3498db" />
+        </pattern>
+        <rect width="100%" height="100%" fill="url(#pattern)" />
+    </svg>
+</div>
+""", unsafe_allow_html=True)
+
+# Dashboard header
+st.markdown("""
+<div style="text-align: center; margin-bottom: 1.5rem;">
+    <h1>🔍 Historical Data Analysis</h1>
+    <p style="color: #7f8c8d; margin-top: -2rem;">Compare and analyze your past monitoring sessions</p>
+</div>
+""", unsafe_allow_html=True)
 
 # **Ensure User is Logged In**
 if "patient_id" not in st.session_state:
@@ -21,16 +45,23 @@ patient_id = st.session_state["patient_id"]
 username = st.session_state["username"]
 
 # Display patient info
-col1, col2 = st.columns(2)
-with col1:
-    st.metric(label="Patient ID", value=patient_id)
-with col2:
-    st.metric(label="Username", value=username)
+with st.container():
+    st.markdown("""
+    <div class="card">
+        <h3>Patient Information</h3>
+    """, unsafe_allow_html=True)
+    
+    col1, col2 = st.columns(2)
+    with col1:
+        st.metric(label="Patient ID", value=patient_id)
+    with col2:
+        st.metric(label="Username", value=username)
+        
+    st.markdown("</div>", unsafe_allow_html=True)  # Close the card div
 
-st.divider()
-
+# Helper functions (keeping existing functions)
 def get_data_instance(data_id: str):
-    """Get a single data instance with all details"""
+    # ... keep existing code
     conn = get_db_connection()
     cursor = conn.cursor()
     cursor.execute("""
@@ -46,10 +77,8 @@ def get_data_instance(data_id: str):
     conn.close()
     return data
 
-
-# Function to get patient data IDs
 def get_patient_data_ids(patient_id):
-    """Get all data IDs for the patient"""
+    # ... keep existing code
     conn = get_db_connection()
     cursor = conn.cursor()
     cursor.execute("""
@@ -64,7 +93,7 @@ def get_patient_data_ids(patient_id):
     return data_ids
 
 def load_data(data_id):
-    """Load and process data for a specific data_id"""
+    # ... keep existing code
     raw_data = get_data_instance(data_id)
     
     if not raw_data:
@@ -147,8 +176,7 @@ def load_data(data_id):
         return None
 
 def get_data_info(data_id, created_at):
-    """Get basic information about a data instance"""
-    # Try to load the data to get row count and parameters
+    # ... keep existing code
     df = load_data(data_id)
 
     # Ensure df is valid before accessing its columns
@@ -203,7 +231,7 @@ def get_data_info(data_id, created_at):
     }
 
 def format_timestamp(created_at):
-    """Helper function to format timestamps safely"""
+    # ... keep existing code
     if isinstance(created_at, datetime):
         return created_at.strftime("%d-%m-%Y %H:%M")
     
@@ -212,18 +240,34 @@ def format_timestamp(created_at):
     except Exception:
         return str(created_at)
 
-    
+# Main content
+st.markdown("""
+<div class="card">
+    <h3>Data Selection</h3>
+    <p>Choose data sets to compare and analyze</p>
+""", unsafe_allow_html=True)
+
 # Get data IDs for the patient
 all_data_ids = {}
 data_ids = get_patient_data_ids(patient_id)
 
 if not data_ids:
-    st.warning(f"No data found for your account")
+    st.warning("No historical data found for your account")
+    
+    st.markdown("""
+    <div style="text-align: center; padding: 2rem; opacity: 0.7;">
+        <svg width="80" height="80" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M19 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19V5C21 3.9 20.1 3 19 3ZM19 19H5V5H19V19Z" fill="#7f8c8d"/>
+            <path d="M7 12H9V17H7V12Z" fill="#7f8c8d"/>
+            <path d="M11 7H13V17H11V7Z" fill="#7f8c8d"/>
+            <path d="M15 9H17V17H15V9Z" fill="#7f8c8d"/>
+        </svg>
+        <p style="margin-top: 1rem;">Begin a new trial to collect data for future comparison</p>
+        <button onclick="window.location.href='patient_dashboard'" style="padding: 0.5rem 1rem; background-color: #3498db; color: white; border: none; border-radius: 4px; cursor: pointer; margin-top: 1rem;">Go to Dashboard</button>
+    </div>
+    """, unsafe_allow_html=True)
+    
     st.stop()
-
-# Create data info table
-st.header("Available Data")
-st.write("Select data IDs from the table below for comparison:")
 
 # Collect data info for the table
 data_info_list = []
@@ -238,10 +282,9 @@ for d_id, created_at in data_ids:
     }
 
 # Display data info table
+st.markdown("<p>Available data sets:</p>", unsafe_allow_html=True)
 data_info_df = pd.DataFrame(data_info_list)
 st.dataframe(data_info_df, use_container_width=True)
-
-
 
 # Initialize session state for selected data IDs if not exists
 if 'selected_data_ids' not in st.session_state or not set(st.session_state.selected_data_ids).issubset(set(all_data_ids.keys())):
@@ -257,6 +300,8 @@ selected_data_ids = st.multiselect(
     default=st.session_state.selected_data_ids
 )
 
+st.markdown("</div>", unsafe_allow_html=True)  # Close the card div
+
 # Update session state
 st.session_state.selected_data_ids = selected_data_ids
 
@@ -265,14 +310,26 @@ if not selected_data_ids:
     st.stop()
 
 # Data ID overlay option (only show if multiple data IDs selected)
-overlay_data_ids = True
-if len(selected_data_ids) > 1:
-    overlay_data_ids = st.checkbox("Overlay data in visualizations", value=True, 
-                                  help="If checked, data from all selected data IDs will be shown in the same plots")
-
-# Time normalization option
-use_normalized_time = st.checkbox("Use normalized time (seconds from start)", value=True,
-                                help="If checked, time will be shown as seconds from the start of each trial")
+with st.container():
+    st.markdown("""
+    <div class="card">
+        <h3>Analysis Settings</h3>
+    """, unsafe_allow_html=True)
+    
+    col1, col2 = st.columns(2)
+    
+    overlay_data_ids = True
+    with col1:
+        if len(selected_data_ids) > 1:
+            overlay_data_ids = st.checkbox("Overlay data in visualizations", value=True, 
+                                          help="If checked, data from all selected data IDs will be shown in the same plots")
+    
+    # Time normalization option
+    with col2:
+        use_normalized_time = st.checkbox("Use normalized time (seconds from start)", value=True,
+                                        help="If checked, time will be shown as seconds from the start of each trial")
+    
+    st.markdown("</div>", unsafe_allow_html=True)  # Close the card div
 
 # Load data for selected data IDs
 data_frames = {}
@@ -314,65 +371,71 @@ common_numeric_cols = list(common_numeric_cols) if common_numeric_cols else []
 timestamp_cols = list(timestamp_cols)
 
 # Display data summary
-st.header("Data Summary")
-
-# Create a tabular summary
-summary_data = []
-for data_id, df in data_frames.items():
-    # Format the timestamp
-    timestamp = "Unknown"
-    if 'created_at' in df.columns and not df.empty:
-        created_at = df['created_at'].iloc[0]
-        if isinstance(created_at, datetime):
-            timestamp = created_at.strftime("%d-%m-%Y %H:%M")
-        elif isinstance(created_at, str):
-            # Try to parse the string timestamp
-            try:
-                # Try different formats
+with st.container():
+    st.markdown("""
+    <div class="card">
+        <h3>Data Summary</h3>
+    """, unsafe_allow_html=True)
+    
+    # Create a tabular summary
+    summary_data = []
+    for data_id, df in data_frames.items():
+        # Format the timestamp
+        timestamp = "Unknown"
+        if 'created_at' in df.columns and not df.empty:
+            created_at = df['created_at'].iloc[0]
+            if isinstance(created_at, datetime):
+                timestamp = created_at.strftime("%d-%m-%Y %H:%M")
+            elif isinstance(created_at, str):
+                # Try to parse the string timestamp
                 try:
-                    dt = datetime.strptime(created_at, "%Y-%m-%d %H:%M:%S.%f")
-                except ValueError:
+                    # Try different formats
                     try:
-                        dt = datetime.strptime(created_at, "%Y-%m-%d %H:%M:%S")
+                        dt = datetime.strptime(created_at, "%Y-%m-%d %H:%M:%S.%f")
                     except ValueError:
                         try:
-                            dt = datetime.strptime(created_at, "%Y-%m-%dT%H:%M:%S.%f")
+                            dt = datetime.strptime(created_at, "%Y-%m-%d %H:%M:%S")
                         except ValueError:
                             try:
-                                dt = datetime.fromisoformat(created_at.replace('Z', '+00:00'))
+                                dt = datetime.strptime(created_at, "%Y-%m-%dT%H:%M:%S.%f")
                             except ValueError:
-                                # If all parsing attempts fail, use the string as is
-                                timestamp = created_at
-                                dt = None
-                
-                if dt:
-                    timestamp = dt.strftime("%d-%m-%Y %H:%M")
-            except Exception:
-                # If parsing fails, use the string as is
-                timestamp = created_at
+                                try:
+                                    dt = datetime.fromisoformat(created_at.replace('Z', '+00:00'))
+                                except ValueError:
+                                    # If all parsing attempts fail, use the string as is
+                                    timestamp = created_at
+                                    dt = None
+                    
+                    if dt:
+                        timestamp = dt.strftime("%d-%m-%Y %H:%M")
+                except Exception:
+                    # If parsing fails, use the string as is
+                    timestamp = created_at
+        
+        # Get duration if available
+        duration = "N/A"
+        if 'time_seconds' in df.columns and not df.empty:
+            max_seconds = df['time_seconds'].max()
+            if max_seconds < 60:
+                duration = f"{max_seconds:.1f} seconds"
+            elif max_seconds < 3600:
+                duration = f"{max_seconds/60:.1f} minutes"
+            else:
+                duration = f"{max_seconds/3600:.1f} hours"
+        
+        summary_data.append({
+            'Data ID': data_id,
+            'Timestamp': timestamp,
+            'Rows': len(df),
+            'Duration': duration,
+            'Columns': len(df.columns),
+            'Numeric Columns': len(data_id_numeric_cols.get(data_id, []))
+        })
     
-    # Get duration if available
-    duration = "N/A"
-    if 'time_seconds' in df.columns and not df.empty:
-        max_seconds = df['time_seconds'].max()
-        if max_seconds < 60:
-            duration = f"{max_seconds:.1f} seconds"
-        elif max_seconds < 3600:
-            duration = f"{max_seconds/60:.1f} minutes"
-        else:
-            duration = f"{max_seconds/3600:.1f} hours"
+    summary_df = pd.DataFrame(summary_data)
+    st.dataframe(summary_df, use_container_width=True)
     
-    summary_data.append({
-        'Data ID': data_id,
-        'Timestamp': timestamp,
-        'Rows': len(df),
-        'Duration': duration,
-        'Columns': len(df.columns),
-        'Numeric Columns': len(data_id_numeric_cols.get(data_id, []))
-    })
-
-summary_df = pd.DataFrame(summary_data)
-st.dataframe(summary_df, use_container_width=True)
+    st.markdown("</div>", unsafe_allow_html=True)  # Close the card div
 
 # Show data previews in expandable sections
 with st.expander("Preview Data"):
@@ -399,223 +462,249 @@ with st.expander("Preview Data"):
             st.dataframe(df.drop(columns=["data_id", "patient_id", "username", "comments"], errors="ignore"), use_container_width=True)
 
 # Parameter selection
-st.header("Parameter Selection")
-
-# Option to use common parameters only
-use_common_only = st.checkbox("Show only parameters common to all datasets", value=True if common_numeric_cols else False)
-
-if use_common_only and common_numeric_cols:
-    available_params = common_numeric_cols
-else:
-    available_params = all_numeric_cols
-
-# Select parameters to visualize
-selected_params = st.multiselect(
-    "Select parameters to compare",
-    options=available_params,
-    default=available_params[:min(3, len(available_params))]
-)
+with st.container():
+    st.markdown("""
+    <div class="card">
+        <h3>Parameter Selection</h3>
+    """, unsafe_allow_html=True)
+    
+    # Option to use common parameters only
+    use_common_only = st.checkbox("Show only parameters common to all datasets", value=True if common_numeric_cols else False)
+    
+    if use_common_only and common_numeric_cols:
+        available_params = common_numeric_cols
+    else:
+        available_params = all_numeric_cols
+    
+    # Select parameters to visualize
+    selected_params = st.multiselect(
+        "Select parameters to compare",
+        options=available_params,
+        default=available_params[:min(3, len(available_params))]
+    )
+    
+    st.markdown("</div>", unsafe_allow_html=True)  # Close the card div
 
 if not selected_params:
     st.warning("Please select at least one parameter to visualize")
     st.stop()
 
 # Visualization options
-st.header("Visualization")
-
-# Choose visualization type
-viz_type = st.radio(
-    "Select visualization type",
-    options=["Line Charts", "Box Plots", "Violin Plots", "Bar Charts", "Scatter Matrix", "Heatmap"],
-    horizontal=True
-)
+with st.container():
+    st.markdown("""
+    <div class="card">
+        <h3>Visualization</h3>
+    """, unsafe_allow_html=True)
+    
+    # Choose visualization type
+    viz_type = st.radio(
+        "Select visualization type",
+        options=["Line Charts", "Box Plots", "Violin Plots", "Bar Charts", "Scatter Matrix", "Heatmap"],
+        horizontal=True
+    )
+    
+    st.markdown("</div>", unsafe_allow_html=True)  # Close the card div
 
 # Create visualizations based on selected type
-if viz_type == "Line Charts":
-    # One chart per parameter
-    for param in selected_params:
-        fig = go.Figure()
-        
-        for data_id, df in data_frames.items():
-            if param in df.columns:
-                # Determine x-axis values based on user preference
-                if use_normalized_time and 'time_seconds' in df.columns:
-                    x_values = df['time_seconds']
-                    x_title = "Time (seconds from start)"
-                elif 'timestamps' in df.columns:
-                    x_values = df['timestamps']
-                    x_title = "Timestamp"
-                else:
-                    x_values = df.index
-                    x_title = "Data Point"
-                
-                fig.add_trace(go.Scatter(
-                    x=x_values,
-                    y=df[param],
-                    mode='lines+markers',
-                    name=f"Data ID: {data_id}"
-                ))
-        
-        fig.update_layout(
-            title=f"{param} Comparison",
-            xaxis_title=x_title,
-            yaxis_title=param,
-            legend_title="Data ID"
-        )
-        st.plotly_chart(fig, use_container_width=True)
-
-elif viz_type == "Box Plots":
-    # Create a combined dataframe for box plots
-    combined_data = []
-    
-    for param in selected_params:
-        for data_id, df in data_frames.items():
-            if param in df.columns:
-                param_data = df[param].dropna()
-                temp_df = pd.DataFrame({
-                    'Parameter': [param] * len(param_data),
-                    'Value': param_data,
-                    'Data ID': [f"Data ID: {data_id}"] * len(param_data)
-                })
-                combined_data.append(temp_df)
-    
-    if combined_data:
-        combined_df = pd.concat(combined_data, ignore_index=True)
-        
-        fig = px.box(
-            combined_df, 
-            x='Parameter', 
-            y='Value', 
-            color='Data ID',
-            title="Parameter Distribution Comparison",
-            points="all"
-        )
-        st.plotly_chart(fig, use_container_width=True)
-    else:
-        st.warning("No valid data for box plots")
-
-elif viz_type == "Violin Plots":
-    # Create a combined dataframe for violin plots
-    combined_data = []
-    
-    for param in selected_params:
-        for data_id, df in data_frames.items():
-            if param in df.columns:
-                param_data = df[param].dropna()
-                temp_df = pd.DataFrame({
-                    'Parameter': [param] * len(param_data),
-                    'Value': param_data,
-                    'Data ID': [f"Data ID: {data_id}"] * len(param_data)
-                })
-                combined_data.append(temp_df)
-    
-    if combined_data:
-        combined_df = pd.concat(combined_data, ignore_index=True)
-        
-        fig = px.violin(
-            combined_df, 
-            x='Parameter', 
-            y='Value', 
-            color='Data ID',
-            box=True,
-            title="Parameter Distribution Comparison"
-        )
-        st.plotly_chart(fig, use_container_width=True)
-    else:
-        st.warning("No valid data for violin plots")
-
-elif viz_type == "Bar Charts":
-    # Calculate statistics for bar charts
-    stats_data = []
-    
-    for param in selected_params:
-        for data_id, df in data_frames.items():
-            if param in df.columns:
-                stats = {
-                    'Data ID': f"Data ID: {data_id}",
-                    'Parameter': param,
-                    'Mean': df[param].mean(),
-                    'Median': df[param].median(),
-                    'Min': df[param].min(),
-                    'Max': df[param].max(),
-                    'Std Dev': df[param].std()
-                }
-                stats_data.append(stats)
-    
-    if stats_data:
-        stats_df = pd.DataFrame(stats_data)
-        
-        # Let user choose which statistic to display
-        stat_option = st.selectbox(
-            "Select statistic to display",
-            options=['Mean', 'Median', 'Min', 'Max', 'Std Dev']
-        )
-        
-        fig = px.bar(
-            stats_df, 
-            x='Parameter', 
-            y=stat_option, 
-            color='Data ID',
-            barmode='group',
-            title=f"{stat_option} Comparison"
-        )
-        st.plotly_chart(fig, use_container_width=True)
-    else:
-        st.warning("No valid data for bar charts")
-
-elif viz_type == "Scatter Matrix":
-    # Only use the first few parameters to avoid overcrowding
-    display_params = selected_params[:min(4, len(selected_params))]
-    
-    if len(display_params) < 2:
-        st.warning("Please select at least 2 parameters for scatter matrix")
-    else:
-        # Create a combined dataframe with an identifier column
+with st.container():
+    if viz_type == "Line Charts":
+        # One chart per parameter
+        for param in selected_params:
+            fig = go.Figure()
+            
+            for data_id, df in data_frames.items():
+                if param in df.columns:
+                    # Determine x-axis values based on user preference
+                    if use_normalized_time and 'time_seconds' in df.columns:
+                        x_values = df['time_seconds']
+                        x_title = "Time (seconds from start)"
+                    elif 'timestamps' in df.columns:
+                        x_values = df['timestamps']
+                        x_title = "Timestamp"
+                    else:
+                        x_values = df.index
+                        x_title = "Data Point"
+                    
+                    fig.add_trace(go.Scatter(
+                        x=x_values,
+                        y=df[param],
+                        mode='lines+markers',
+                        name=f"Data ID: {data_id}",
+                        line=dict(width=2),
+                        marker=dict(size=5)
+                    ))
+            
+            fig.update_layout(
+                title=f"{param} Comparison",
+                xaxis_title=x_title,
+                yaxis_title=param,
+                legend_title="Data ID",
+                height=400,
+                template="plotly_white",
+                margin=dict(l=10, r=10, t=40, b=10),
+                legend=dict(
+                    yanchor="top", 
+                    y=0.99, 
+                    xanchor="right", 
+                    x=0.99,
+                    bgcolor="rgba(255,255,255,0.8)",
+                    bordercolor="rgba(0,0,0,0.1)",
+                    borderwidth=1
+                )
+            )
+            st.plotly_chart(fig, use_container_width=True)
+    elif viz_type == "Box Plots":
+        # Create a combined dataframe for box plots
         combined_data = []
         
-        for data_id, df in data_frames.items():
-            # Check if all selected parameters exist in this dataframe
-            if all(param in df.columns for param in display_params):
-                temp_df = df[display_params].copy()
-                temp_df['Data ID'] = f"Data ID: {data_id}"
-                combined_data.append(temp_df)
+        for param in selected_params:
+            for data_id, df in data_frames.items():
+                if param in df.columns:
+                    param_data = df[param].dropna()
+                    temp_df = pd.DataFrame({
+                        'Parameter': [param] * len(param_data),
+                        'Value': param_data,
+                        'Data ID': [f"Data ID: {data_id}"] * len(param_data)
+                    })
+                    combined_data.append(temp_df)
         
         if combined_data:
             combined_df = pd.concat(combined_data, ignore_index=True)
             
-            fig = px.scatter_matrix(
-                combined_df,
-                dimensions=display_params,
+            fig = px.box(
+                combined_df, 
+                x='Parameter', 
+                y='Value', 
                 color='Data ID',
-                title="Parameter Relationships"
+                title="Parameter Distribution Comparison",
+                points="all"
             )
-            fig.update_layout(height=800)
             st.plotly_chart(fig, use_container_width=True)
         else:
-            st.warning("No data frames contain all the selected parameters for scatter matrix")
+            st.warning("No valid data for box plots")
 
-elif viz_type == "Heatmap":
-    # Calculate correlation matrices for each dataset
-    for data_id, df in data_frames.items():
-        # Filter to only include selected parameters that exist in this dataframe
-        valid_params = [param for param in selected_params if param in df.columns]
+    elif viz_type == "Violin Plots":
+        # Create a combined dataframe for violin plots
+        combined_data = []
         
-        if len(valid_params) >= 2:
-            st.subheader(f"Correlation Heatmap - Data ID: {data_id}")
+        for param in selected_params:
+            for data_id, df in data_frames.items():
+                if param in df.columns:
+                    param_data = df[param].dropna()
+                    temp_df = pd.DataFrame({
+                        'Parameter': [param] * len(param_data),
+                        'Value': param_data,
+                        'Data ID': [f"Data ID: {data_id}"] * len(param_data)
+                    })
+                    combined_data.append(temp_df)
+        
+        if combined_data:
+            combined_df = pd.concat(combined_data, ignore_index=True)
             
-            # Calculate correlation matrix
-            corr_matrix = df[valid_params].corr()
-            
-            # Create heatmap
-            fig = px.imshow(
-                corr_matrix,
-                text_auto=True,
-                color_continuous_scale='RdBu_r',
-                title=f"Correlation Matrix - Data ID: {data_id}"
+            fig = px.violin(
+                combined_df, 
+                x='Parameter', 
+                y='Value', 
+                color='Data ID',
+                box=True,
+                title="Parameter Distribution Comparison"
             )
             st.plotly_chart(fig, use_container_width=True)
         else:
-            st.warning(f"Not enough valid parameters for correlation heatmap in Data ID: {data_id}")
+            st.warning("No valid data for violin plots")
+
+    elif viz_type == "Bar Charts":
+        # Calculate statistics for bar charts
+        stats_data = []
+        
+        for param in selected_params:
+            for data_id, df in data_frames.items():
+                if param in df.columns:
+                    stats = {
+                        'Data ID': f"Data ID: {data_id}",
+                        'Parameter': param,
+                        'Mean': df[param].mean(),
+                        'Median': df[param].median(),
+                        'Min': df[param].min(),
+                        'Max': df[param].max(),
+                        'Std Dev': df[param].std()
+                    }
+                    stats_data.append(stats)
+        
+        if stats_data:
+            stats_df = pd.DataFrame(stats_data)
+            
+            # Let user choose which statistic to display
+            stat_option = st.selectbox(
+                "Select statistic to display",
+                options=['Mean', 'Median', 'Min', 'Max', 'Std Dev']
+            )
+            
+            fig = px.bar(
+                stats_df, 
+                x='Parameter', 
+                y=stat_option, 
+                color='Data ID',
+                barmode='group',
+                title=f"{stat_option} Comparison"
+            )
+            st.plotly_chart(fig, use_container_width=True)
+        else:
+            st.warning("No valid data for bar charts")
+
+    elif viz_type == "Scatter Matrix":
+        # Only use the first few parameters to avoid overcrowding
+        display_params = selected_params[:min(4, len(selected_params))]
+        
+        if len(display_params) < 2:
+            st.warning("Please select at least 2 parameters for scatter matrix")
+        else:
+            # Create a combined dataframe with an identifier column
+            combined_data = []
+            
+            for data_id, df in data_frames.items():
+                # Check if all selected parameters exist in this dataframe
+                if all(param in df.columns for param in display_params):
+                    temp_df = df[display_params].copy()
+                    temp_df['Data ID'] = f"Data ID: {data_id}"
+                    combined_data.append(temp_df)
+            
+            if combined_data:
+                combined_df = pd.concat(combined_data, ignore_index=True)
+                
+                fig = px.scatter_matrix(
+                    combined_df,
+                    dimensions=display_params,
+                    color='Data ID',
+                    title="Parameter Relationships"
+                )
+                fig.update_layout(height=800)
+                st.plotly_chart(fig, use_container_width=True)
+            else:
+                st.warning("No data frames contain all the selected parameters for scatter matrix")
+
+    elif viz_type == "Heatmap":
+        # Calculate correlation matrices for each dataset
+        for data_id, df in data_frames.items():
+            # Filter to only include selected parameters that exist in this dataframe
+            valid_params = [param for param in selected_params if param in df.columns]
+            
+            if len(valid_params) >= 2:
+                st.subheader(f"Correlation Heatmap - Data ID: {data_id}")
+                
+                # Calculate correlation matrix
+                corr_matrix = df[valid_params].corr()
+                
+                # Create heatmap
+                fig = px.imshow(
+                    corr_matrix,
+                    text_auto=True,
+                    color_continuous_scale='RdBu_r',
+                    title=f"Correlation Matrix - Data ID: {data_id}"
+                )
+                st.plotly_chart(fig, use_container_width=True)
+            else:
+                st.warning(f"Not enough valid parameters for correlation heatmap in Data ID: {data_id}")
 
 # Time-series analysis (if normalized time is available)
 if use_normalized_time and any('time_seconds' in df.columns for df in data_frames.values()):
@@ -658,7 +747,8 @@ if use_normalized_time and any('time_seconds' in df.columns for df in data_frame
                 title=f"{time_param} Over Time",
                 xaxis_title="Time (seconds from start)",
                 yaxis_title=time_param,
-                legend_title="Data Source"
+                legend_title="Data Source",
+                template="plotly_white"
             )
             st.plotly_chart(fig, use_container_width=True)
             
@@ -688,7 +778,8 @@ if use_normalized_time and any('time_seconds' in df.columns for df in data_frame
                 title=f"Rate of Change for {time_param}",
                 xaxis_title="Time (seconds from start)",
                 yaxis_title=f"Rate of Change ({time_param}/second)",
-                legend_title="Data Source"
+                legend_title="Data Source",
+                template="plotly_white"
             )
             st.plotly_chart(rate_fig, use_container_width=True)
 
@@ -725,6 +816,11 @@ with st.expander("Statistical Comparison"):
         st.warning("No valid data for statistical comparison")
 
 # Navigation
-st.divider()
-if st.button("← Back to Dashboard"):
+st.markdown("""
+<div style="display: flex; justify-content: center; margin-top: 2rem;">
+""", unsafe_allow_html=True)
+
+if st.button("← Back to Dashboard", use_container_width=True):
     st.switch_page("pages/patient_dashboard.py")
+
+st.markdown("</div>", unsafe_allow_html=True)
