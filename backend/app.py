@@ -1,13 +1,18 @@
 from fastapi import FastAPI, WebSocket, Depends, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.trustedhost import TrustedHostMiddleware
+from fastapi.middleware.trustedhost import TrustedHostMiddleware
 from fastapi.security import OAuth2PasswordBearer
+from fastapi.responses import JSONResponse
 from fastapi.responses import JSONResponse
 import asyncpg
 import jwt
 from datetime import datetime, timedelta
 import os
 from dotenv import load_dotenv
+from backend.services.stream_service import StreamService
+from backend.models.auth import TokenData, DeviceAuth
+from backend.models.stream import SensorData, TrialResponse
 from backend.services.stream_service import StreamService
 from backend.models.auth import TokenData, DeviceAuth
 from backend.models.stream import SensorData, TrialResponse
@@ -47,7 +52,11 @@ app = FastAPI(
     version="1.0.0"
 )
 
+
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+
+# Security middleware
+app.add_middleware(TrustedHostMiddleware, allowed_hosts=["localhost", "127.0.0.1"])
 
 # Security middleware
 app.add_middleware(TrustedHostMiddleware, allowed_hosts=["localhost", "127.0.0.1"])
@@ -68,6 +77,16 @@ app.add_middleware(
     max_age=600,  # Cache preflight requests for 10 minutes
 )
 
+@app.middleware("http")
+async def add_security_headers(request: Request, call_next):
+    response = await call_next(request)
+    response.headers["X-Content-Type-Options"] = "nosniff"
+    response.headers["X-Frame-Options"] = "DENY"
+    response.headers["X-XSS-Protection"] = "1; mode=block"
+    response.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains"
+    return response
+
+# Your database connection logic should go here
 @app.middleware("http")
 async def add_security_headers(request: Request, call_next):
     response = await call_next(request)
@@ -99,6 +118,11 @@ stream_service = None
 @app.on_event("startup")
 async def startup_event():
     global pool, stream_service
+    db_pool = await init_db()
+    if db_pool:
+        print("Connected to the database.")
+    else:
+        print("Database connection failed.")
     db_pool = await init_db()
     if db_pool:
         print("Connected to the database.")
@@ -178,14 +202,25 @@ if __name__ == "__main__":
     ssl_keyfile = os.getenv('SSL_KEY_PATH', os.path.join(os.path.dirname(os.path.dirname(__file__)), "ssl", "server.key"))
     ssl_certfile = os.getenv('SSL_CERT_PATH', os.path.join(os.path.dirname(os.path.dirname(__file__)), "ssl", "server.crt"))
     
+    # Get SSL paths from environment or use default paths
+    ssl_keyfile = os.getenv('SSL_KEY_PATH', os.path.join(os.path.dirname(os.path.dirname(__file__)), "ssl", "server.key"))
+    ssl_certfile = os.getenv('SSL_CERT_PATH', os.path.join(os.path.dirname(os.path.dirname(__file__)), "ssl", "server.crt"))
+    
     if os.path.exists(ssl_keyfile) and os.path.exists(ssl_certfile):
         ssl_context = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)
         ssl_context.load_cert_chain(certfile=ssl_certfile, keyfile=ssl_keyfile)
         print(f"🔒 Starting server with SSL")
         print(f"Certificate file: {ssl_certfile}")
         print(f"Key file: {ssl_keyfile}")
+        print(f"🔒 Starting server with SSL")
+        print(f"Certificate file: {ssl_certfile}")
+        print(f"Key file: {ssl_keyfile}")
         uvicorn.run(app, host="0.0.0.0", port=5000, ssl=ssl_context)
     else:
+        print("⚠️ Warning: SSL certificates not found at:")
+        print(f"Certificate file: {ssl_certfile}")
+        print(f"Key file: {ssl_keyfile}")
+        print("Running without SSL (not recommended for production)")
         print("⚠️ Warning: SSL certificates not found at:")
         print(f"Certificate file: {ssl_certfile}")
         print(f"Key file: {ssl_keyfile}")

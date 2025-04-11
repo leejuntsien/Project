@@ -5,8 +5,11 @@ services:
       - "8501:8501"  # Streamlit
       - "5000:5000"  # WebSocket
       - "5443:5443"  # HTTPS
+      - "5443:5443"  # HTTPS
     volumes:
       - .:/app
+      - ./data:/app/database
+      - ./ssl:/app/ssl  # Mount SSL certificates
       - ./data:/app/database
       - ./ssl:/app/ssl  # Mount SSL certificates
     environment:
